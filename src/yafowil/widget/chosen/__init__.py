@@ -5,7 +5,7 @@ from yafowil.base import factory
 resourcedir = os.path.join(os.path.dirname(__file__), 'resources')
 js = [{
     'group': 'yafowil.widget.select2.dependencies',
-    'resource': 'select2/select2/select2.jquery.js',
+    'resource': 'select2/select2.js',
     'order': 20,
 }, {
     'group': 'yafowil.widget.select2.common',
@@ -14,7 +14,7 @@ js = [{
 }]
 css = [{
     'group': 'yafowil.widget.select2.dependencies',
-    'resource': 'select2/select2/select2.css',
+    'resource': 'select2/select2.css',
     'order': 20,
 }, {
     'group': 'yafowil.widget.select2.common',
