@@ -1,7 +1,3 @@
-iframe.select2-sandbox { 
-    width:100% !important;
-    height:30em !important; }
-
-.chzn-container-multi .chzn-choices .search-field input {
-    height:auto;
+.select2-container {
+    min-width:250px;
 }
