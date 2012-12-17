@@ -16,6 +16,7 @@ Select2 widget in single selection mode.
 
     select2 = factory('#field:select2', props={
         'label': 'Select some items',
+        'placeholder': 'Select some items',
         'required': 'Selection is required',
         'vocabulary': vocab,
         'multivalued': False,
@@ -30,6 +31,7 @@ Select2 widget in multi selection mode.
 
     select2 = factory('#field:select2', props={
         'label': 'Select some items',
+        'placeholder': 'Select some items',
         'required': 'Selection is required',
         'vocabulary': vocab,
         'multivalued': True,
@@ -42,6 +44,7 @@ DOC_CHOSEN_MULTI_2 = """
 
     select2 = factory('#field:select2', props={
         'label': 'Select some items',
+        'placeholder': 'Select some items',
         'required': 'Selection is required',
         'vocabulary': vocab,
         'multivalued': True,
@@ -60,6 +63,7 @@ def get_example():
     select2_single = factory(u'fieldset', name='yafowil_select2_single')
     select2_single['text'] = factory('#field:select2', props={
         'label': 'Select some items',
+        'placeholder': 'Select some items',
         'required': 'Selection is required',
         'vocabulary': vocab,
         'multivalued': False,
@@ -69,6 +73,7 @@ def get_example():
     select2_multi = factory(u'fieldset', name='yafowil_select2_multi')
     select2_multi['text'] = factory('#field:select2', props={
         'label': 'Select some items',
+        'placeholder': 'Select some items',
         'required': 'Selection is required',
         'vocabulary': vocab,
         'multivalued': True,
@@ -78,6 +83,7 @@ def get_example():
     select2_multi2 = factory(u'fieldset', name='yafowil_select2_multi2')
     select2_multi2['text'] = factory('#field:select2', props={
         'label': 'Select some items',
+        'placeholder': 'Select some items',
         'required': 'Selection is required',
         'vocabulary': vocab,
         'multivalued': True,
