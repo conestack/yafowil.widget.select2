@@ -2,9 +2,9 @@
 from yafowil.base import factory
 
 
-DOC_CHOSEN_SINGLE = """
+DOC_SELECT2_1 = """
 select2
-------
+-------
 
 Select2 widget in single selection mode.
 
@@ -24,7 +24,7 @@ Select2 widget in single selection mode.
 
 """
 
-DOC_CHOSEN_MULTI = """
+DOC_SELECT2_2 = """
 Select2 widget in multi selection mode.
 
 .. code-block:: python
@@ -39,19 +39,6 @@ Select2 widget in multi selection mode.
 
 """
 
-DOC_CHOSEN_MULTI_2 = """
-.. code-block:: python
-
-    select2 = factory('#field:select2', props={
-        'label': 'Select some items',
-        'placeholder': 'Select some items',
-        'required': 'Selection is required',
-        'vocabulary': vocab,
-        'multivalued': True,
-        'allowClear': True,
-        })
-
-"""
 
 def get_example():
 
@@ -60,8 +47,8 @@ def get_example():
                     u'Traminer', u'Morrilon', u'Muskateller'))
 
     # single selection
-    select2_single = factory(u'fieldset', name='yafowil_select2_single')
-    select2_single['text'] = factory('#field:select2', props={
+    select2_1 = factory(u'fieldset', name='yafowil_select2_1')
+    select2_1['text'] = factory('#field:select2', props={
         'label': 'Select some items',
         'placeholder': 'Select some items',
         'required': 'Selection is required',
@@ -70,8 +57,8 @@ def get_example():
         })
 
     # multiple selection
-    select2_multi = factory(u'fieldset', name='yafowil_select2_multi')
-    select2_multi['text'] = factory('#field:select2', props={
+    select2_2 = factory(u'fieldset', name='yafowil_select2_2')
+    select2_2['text'] = factory('#field:select2', props={
         'label': 'Select some items',
         'placeholder': 'Select some items',
         'required': 'Selection is required',
@@ -79,24 +66,10 @@ def get_example():
         'multivalued': True,
         })
 
-    # multiple selection, search substrings, allow new values
-    select2_multi2 = factory(u'fieldset', name='yafowil_select2_multi2')
-    select2_multi2['text'] = factory('#field:select2', props={
-        'label': 'Select some items',
-        'placeholder': 'Select some items',
-        'required': 'Selection is required',
-        'vocabulary': vocab,
-        'multivalued': True,
-        'allowClear': True,
-        })
-
-    return [{'widget': select2_single,
-             'doc': DOC_CHOSEN_SINGLE,
+    return [{'widget': select2_1,
+             'doc': DOC_SELECT2_1,
              'title': 'Single Selection'},
-            {'widget': select2_multi,
-             'doc': DOC_CHOSEN_MULTI,
+            {'widget': select2_2,
+             'doc': DOC_SELECT2_2,
              'title': 'Multi Selection'},
-            {'widget': select2_multi2,
-             'doc': DOC_CHOSEN_MULTI_2,
-             'title': 'Multi Selection, New Values, Search Substrings'},
            ]
