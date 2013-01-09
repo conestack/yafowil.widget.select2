@@ -49,21 +49,20 @@ def get_example():
     # single selection
     select2_1 = factory(u'fieldset', name='yafowil_select2_1')
     select2_1['text'] = factory('#field:select2', props={
-        'label': 'Select some items',
-        'placeholder': 'Select some items',
-        'required': 'Selection is required',
+        'placeholder': 'Select some items or type',
         'vocabulary': vocab,
-        'multivalued': False,
         })
 
     # multiple selection
     select2_2 = factory(u'fieldset', name='yafowil_select2_2')
-    select2_2['text'] = factory('#field:select2', props={
-        'label': 'Select some items',
-        'placeholder': 'Select some items',
-        'required': 'Selection is required',
+    select2_2['text'] = factory('#field:select2input', props={
+        'placeholder': 'Select some items or type',
         'vocabulary': vocab,
-        'multivalued': True,
+        'multiple': 'multiple',
+        'allowClear': True,
+        'placeholder': 'select some items',
+        'minimumInputLength': 1,
+        'tags': '',
         })
 
     return [{'widget': select2_1,
