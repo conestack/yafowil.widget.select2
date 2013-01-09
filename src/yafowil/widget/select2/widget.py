@@ -17,7 +17,6 @@ from yafowil.utils import (
 
 select2_options = [
     'allowClear',
-    'placeholder',
     'minimumInputLength',
     'formatResult',
     'formatSelection',

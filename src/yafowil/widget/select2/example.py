@@ -60,7 +60,6 @@ def get_example():
         'vocabulary': vocab,
         'multiple': 'multiple',
         'allowClear': True,
-        'placeholder': 'select some items',
         'minimumInputLength': 1,
         'tags': '',
         })
