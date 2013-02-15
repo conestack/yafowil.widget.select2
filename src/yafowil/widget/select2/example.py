@@ -67,7 +67,7 @@ def get_example():
     return [{'widget': select2_1,
              'doc': DOC_SELECT2_1,
              'title': 'Single Selection'},
-            {'widget': select2_2,
-             'doc': DOC_SELECT2_2,
-             'title': 'Multi Selection'},
+            #{'widget': select2_2,
+            # 'doc': DOC_SELECT2_2,
+            # 'title': 'Multi Selection'},
            ]
