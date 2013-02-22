@@ -21,36 +21,15 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
     });
 
     $.extend(yafowil, {
-
         select2: {
-
             binder: function(context) {
-
                 $('.select2', context).each(function(event) {
-
-                    var extra_keys = [];
                     var elem = $(this);
                     var options = elem.data();
-
-                    function make_options_extra(options, extra_keys) {
-                        // cleanup api options object and move out extra options
-                        var options_extra = {};
-                        for (i=0;i<extra_keys.length;i++) {
-                            key = extra_keys[i];
-                            options_extra[key] = options[key];
-                            delete options[key];
-                        }
-                        return options_extra;
-                    }
-                    options_extra = make_options_extra(options, extra_keys);
-
                     elem.select2(options);
-
                 });
-
             }
         }
     });
-
 
 })(jQuery);
