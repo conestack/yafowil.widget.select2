@@ -26,7 +26,7 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
 
             binder: function(context) {
 
-                $('select.select2', context).each(function(event) {
+                $('.select2', context).each(function(event) {
 
                     var extra_keys = [];
                     var elem = $(this);
