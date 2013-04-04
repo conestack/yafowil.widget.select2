@@ -19,9 +19,13 @@ Render widget::
 
     >>> widget = factory('select2', 'multi', props={'required': True})
     >>> widget()
-    u'<input id="exists-multi" name="multi-exists" type="hidden" 
-    value="exists" /><select class="select2" id="input-multi" 
-    multiple="multiple" name="multi" required="required" />'
+    u'<select class="select2" id="input-multi" name="multi" required="required" />'
+
+Render select2 in tag mode::
+
+    >>> widget_input = factory('select2input', 'multi', props={'required': True})
+    >>> widget_input()
+    u'<input class="select2" id="input-multi" name="multi" required="required" />'
 
 Widget extraction::
 
