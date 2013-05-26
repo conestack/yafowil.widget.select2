@@ -37,7 +37,7 @@ def select2_edit_renderer(widget, data, inputtag=False):
     if multiple:
         custom_attrs['multiple'] = multiple
     renderer = inputtag and input_generic_renderer or select_edit_renderer
-    return renderer(widget, data, **custom_attrs)
+    return renderer(widget, data, custom_attrs=custom_attrs)
 
 @managedprops('multiple', *select2_options)
 def select2_edit_renderer_input(widget, data):
