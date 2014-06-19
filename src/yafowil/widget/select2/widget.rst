@@ -17,8 +17,8 @@ Render multiple::
     ...     'multiple': True})
     >>> widget()
     u'<input id="exists-multi" name="multi-exists" type="hidden" 
-    value="exists" /><select class="select2" data-multiple=\'true\' 
-    id="input-multi" multiple="multiple" name="multi" required="required" />'
+    value="exists" /><select class="select2" id="input-multi" 
+    multiple="multiple" name="multi" required="required" />'
 
 Render single in tag mode::
 

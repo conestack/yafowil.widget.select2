@@ -43,8 +43,9 @@ Select2 widget in input mode.
 
 .. code-block:: python
 
-    select2 = factory('#field:select2input', props={
+    select2 = factory('#field:select2', props={
         'label': 'Select or add some items',
+        'inputtag': True,
         'placeholder': 'Select or add some items',
         'minimumInputLength': 1,
         'multiple': True,
@@ -79,8 +80,9 @@ def get_example():
 
     # input mode
     select2_3 = factory(u'fieldset', name='yafowil_select2_3')
-    select2_3['text'] = factory('#field:select2input', props={
+    select2_3['text'] = factory('#field:select2', props={
         'label': 'Select or add some items',
+        'inputtag': True,
         'placeholder': 'Select or add some items',
         'minimumInputLength': 1,
         'multiple': True,

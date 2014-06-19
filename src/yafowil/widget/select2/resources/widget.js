@@ -25,7 +25,8 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
         select2: {
 
             extract_value: function(value) {
-                if (value.indexOf('javascript:') == 0) {
+                if (typeof value == 'string'
+                 && value.indexOf('javascript:') == 0) {
                     value = value.substring(11, value.length);
                     value = value.split('.');
                     if (!value.length) {
@@ -46,9 +47,11 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
             },
 
             update_options: function(options) {
+                var name, value;
                 for (var idx in options) {
                     name = options[idx];
-                    options[name] = select2.extract_value(options[name]);
+                    value = yafowil.select2.extract_value(options[name]);
+                    options[name] = value;
                 }
                 return options;
             },
@@ -56,7 +59,7 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
             binder: function(context) {
                 $('.select2', context).each(function(event) {
                     var elem = $(this);
-                    var options = select2.update_options(elem.data());
+                    var options = yafowil.select2.update_options(elem.data());
                     elem.select2(options);
                 });
             }

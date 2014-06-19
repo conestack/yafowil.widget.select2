@@ -65,15 +65,15 @@ select2_options = [
 
 @managedprops('inputtag', *select2_options)
 def select2_edit_renderer(widget, data):
-    custom_attrs = data_attrs_helper(widget, data, select2_options)
     if attr_value('inputtag', widget, data):
         renderer = input_generic_renderer
     else:
         multiple = attr_value('multiple', widget, data)
-        multivalued = attr_value('multivalued', widget, data)
-        if multiple and not multivalued:
+        if multiple:
             widget.attrs['multivalued'] = True
+            del widget.attrs['multiple']
         renderer = select_edit_renderer
+    custom_attrs = data_attrs_helper(widget, data, select2_options)
     return renderer(widget, data, custom_attrs=custom_attrs)
 
 
