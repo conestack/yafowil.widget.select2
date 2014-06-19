@@ -11,7 +11,7 @@ from yafowil.common import (
 from yafowil.utils import (
     managedprops,
     data_attrs_helper,
-    attr_value
+    attr_value,
 )
 
 
@@ -64,22 +64,32 @@ select2_options = [
 
 
 @managedprops('inputtag', *select2_options)
-def select2_edit_renderer(widget, data, inputtag=False):
+def select2_edit_renderer(widget, data):
     custom_attrs = data_attrs_helper(widget, data, select2_options)
-    if widget.attrs['inputtag']:
+    if attr_value('inputtag', widget, data):
         renderer = input_generic_renderer
     else:
-        if widget.attrs['multiple'] and not widget.attrs['multivalued']:
+        multiple = attr_value('multiple', widget, data)
+        multivalued = attr_value('multivalued', widget, data)
+        if multiple and not multivalued:
             widget.attrs['multivalued'] = True
         renderer = select_edit_renderer
     return renderer(widget, data, custom_attrs=custom_attrs)
+
+
+def select2_display_renderer(widget, data):
+    multiple = attr_value('multiple', widget, data)
+    multivalued = attr_value('multivalued', widget, data)
+    if multiple and not multivalued:
+        widget.attrs['multivalued'] = True
+    return select_display_renderer(widget, data)
 
 
 factory.register(
     'select2',
     extractors=[select_extractor, generic_required_extractor],
     edit_renderers=[select2_edit_renderer],
-    display_renderers=[select_display_renderer])
+    display_renderers=[select2_display_renderer])
 
 factory.doc['blueprint']['select2'] = \
 """Add-on blueprint `yafowil.widget.select2 <http://github.com/bluedynamics/yafowil.widget.select2/>`_
@@ -197,7 +207,7 @@ because multi-value selects always provide such a button for every selected
 option.
 """
 
-factory.defaults['select2.multiple'] = False
+factory.defaults['select2.multiple'] = None
 factory.doc['props']['select2.multiple'] = \
 """Whether or not Select2 allows selection of multiple values.
 
@@ -356,7 +366,7 @@ used to render the message.
 
 factory.defaults['select2.formatLoadMore'] = None
 factory.doc['props']['select2.formatLoadMore'] = \
-"""String containing "Loading more results…" message, or Function used to
+"""String containing "Loading more results" message, or Function used to
 render the message.
 
     formatLoadMore(pageNumber)
