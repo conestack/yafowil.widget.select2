@@ -10,7 +10,6 @@ History
 - Update select widget to 3.5.0.
   [rnix, 2014-06-19]
 
-
 1.0
 ---
 

@@ -4,6 +4,7 @@ from setuptools import (
     find_packages,
 )
 
+
 version = '1.1.dev0'
 shortdesc = 'Chosen select/autocomplete widget for YAFOWIL'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
