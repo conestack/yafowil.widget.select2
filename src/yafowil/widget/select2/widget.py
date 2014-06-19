@@ -63,7 +63,7 @@ select2_options = [
 ]
 
 
-@managedprops('inputtag', *select2_options)
+@managedprops('inputtag', 'ajaxurl', *select2_options)
 def select2_edit_renderer(widget, data):
     if attr_value('inputtag', widget, data):
         renderer = input_generic_renderer
@@ -73,7 +73,8 @@ def select2_edit_renderer(widget, data):
             widget.attrs['multivalued'] = True
             del widget.attrs['multiple']
         renderer = select_edit_renderer
-    custom_attrs = data_attrs_helper(widget, data, select2_options)
+    custom_attrs = data_attrs_helper(
+        widget, data, ['ajaxurl'] + select2_options)
     return renderer(widget, data, custom_attrs=custom_attrs)
 
 
@@ -110,6 +111,13 @@ factory.doc['props']['select2.inputtag'] = \
 """Render widget as input element instead of selection.
 """
 
+factory.defaults['select2.ajaxurl'] = None
+factory.doc['props']['select2.ajaxurl'] = \
+"""Ajax URL to JSON view returning an array of objects like:
+
+    [{id: 'id', text: 'text'}]
+"""
+
 factory.defaults['select2.width'] = None
 factory.doc['props']['select2.width'] = \
 """Controls the width style attribute of the Select2 container div.
@@ -117,7 +125,8 @@ The following values are supported:
 
 off
     No width attribute will be set. Keep in mind that the container div copies
-    classes from the source element so setting the width attribute may not always be necessary.
+    classes from the source element so setting the width attribute may not
+    always be necessary.
 element
     Uses javascript to calculate the width of the source element.
 copy

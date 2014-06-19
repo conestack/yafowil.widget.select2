@@ -60,6 +60,23 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
                 $('.select2', context).each(function(event) {
                     var elem = $(this);
                     var options = yafowil.select2.update_options(elem.data());
+                    if (options.ajaxurl) {
+                        options.ajax = {
+                            url: options.ajaxurl,
+                            dataType: 'json',
+                            data: function (term, page) {
+                                return {
+                                    q: term, // search term
+                                    page_limit: 10
+                                };
+                            },
+                            results: function (data, page) {
+                                // parse the results into the format expected
+                                // by Select2.
+                                return {results: data};
+                            }
+                        }
+                    }
                     elem.select2(options);
                 });
             }
