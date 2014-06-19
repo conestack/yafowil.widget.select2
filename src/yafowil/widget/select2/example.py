@@ -67,7 +67,7 @@ Select2 widget in multi selection mode.
 
 """
 
-TITLE_SELECT2_3 = "Input Mode"
+TITLE_SELECT2_3 = "Tagging Mode"
 DOC_SELECT2_3 = """
 Select2 widget in tag mode.
 
@@ -143,6 +143,26 @@ Select2 multi selection widget fetching data from URL.
 """
 
 
+TITLE_SELECT2_6 = "Tagging mode with ajax"
+DOC_SELECT2_6 = """
+Select2 tagging selection widget fetching data from URL.
+
+.. code-block:: python
+
+    value = [u'Sämling', u'Traminer', u'Welschriesling']
+    select2 = factory('#field:select2', value=value, props={
+        'label': 'Select tags',
+        'inputtag': True,
+        'minimumInputLength': 1,
+        'multiple': True,
+        'placeholder': 'Select tags',
+        'ajaxurl': 'yafowil.widget.select2.json',
+        'tags': True,
+    })
+
+"""
+
+
 def get_example():
 
     vocab = sorted((u'Weißburgunder', u'Welschriesling',
@@ -203,6 +223,20 @@ def get_example():
     })
     select2_5_routes = {'yafowil.widget.select2.json': json_response}
 
+    # ajax tagging
+    select2_6 = factory(u'fieldset', name='yafowil_select2_6')
+    select2_6_val = [u'Sämling', u'Traminer', u'Welschriesling']
+    select2_6['text'] = factory('#field:select2', value=select2_6_val, props={
+        'label': 'Select tags',
+        'inputtag': True,
+        'minimumInputLength': 1,
+        'multiple': True,
+        'placeholder': 'Select tags',
+        'ajaxurl': 'yafowil.widget.select2.json',
+        'tags': True,
+    })
+    select2_6_routes = {'yafowil.widget.select2.json': json_response}
+
     return [{'widget': select2_1,
              'doc': DOC_SELECT2_1,
              'title': TITLE_SELECT2_1},
@@ -219,5 +253,9 @@ def get_example():
             {'widget': select2_5,
              'routes': select2_5_routes,
              'doc': DOC_SELECT2_5,
-             'title': TITLE_SELECT2_5}
+             'title': TITLE_SELECT2_5},
+            {'widget': select2_6,
+             'routes': select2_6_routes,
+             'doc': DOC_SELECT2_6,
+             'title': TITLE_SELECT2_6}
            ]

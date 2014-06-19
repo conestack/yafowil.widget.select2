@@ -67,10 +67,15 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
                             data: function (term, page) {
                                 return {
                                     q: term, // search term
-                                    page_limit: 10
                                 };
                             },
-                            results: function (data, page) {
+                            results: function (data, page, query) {
+                                if (options.tags && data.length == 0) {
+                                    data.push({
+                                        id: query.term,
+                                        text: query.term
+                                    });
+                                }
                                 return {results: data};
                             }
                         };
