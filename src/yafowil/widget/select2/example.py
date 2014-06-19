@@ -69,7 +69,7 @@ Select2 widget in multi selection mode.
 
 TITLE_SELECT2_3 = "Input Mode"
 DOC_SELECT2_3 = """
-Select2 widget in input mode.
+Select2 widget in tag mode.
 
 .. code-block:: python
 

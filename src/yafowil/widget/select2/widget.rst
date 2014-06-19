@@ -25,17 +25,17 @@ Render single in tag mode::
     XXX: how to define value here?
     >>> widget = factory('select2', 'single', props={'inputtag': True})
     >>> widget()
-    u'<input class="select2" id="input-single" name="single" value="[]" />'
+    u'<input class="select2" id="input-single" name="single" value="" />'
 
 Render multiple in tag mode::
 
     XXX: how to define value here?
-    >>> widget = factory('select2', 'multi', props={
+    >>> widget = factory('select2', 'multi', value=['1', '2'], props={
     ...     'inputtag': True,
     ...     'multiple': True})
     >>> widget()
     u'<input class="select2" data-multiple=\'true\' id="input-multi" 
-    name="multi" value="[]" />'
+    name="multi" value="1,2" />'
 
 Widget extraction::
 
