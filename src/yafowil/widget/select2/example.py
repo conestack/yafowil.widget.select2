@@ -43,7 +43,7 @@ Select2 widget in single selection mode.
                     u'Sauvingnon Blanc', u'Sämling', u'Scheurebe',
                     u'Traminer', u'Morrilon', u'Muskateller'))
 
-    select2 = factory('#field:select2', props={
+    select2 = factory('#field:select2', value='Traminer', props={
         'label': 'Select some items',
         'placeholder': 'Select some items',
         'vocabulary': vocab,
@@ -57,7 +57,8 @@ Select2 widget in multi selection mode.
 
 .. code-block:: python
 
-    select2 = factory('#field:select2', props={
+    value = [u'Sauvingnon Blanc', u'Sämling']
+    select2 = factory('#field:select2', value=value, props={
         'label': 'Select some items',
         'placeholder': 'Select some items',
         'vocabulary': vocab,
@@ -72,7 +73,8 @@ Select2 widget in input mode.
 
 .. code-block:: python
 
-    select2 = factory('#field:select2', props={
+    value = [u'Sämling', u'Scheurebe']
+    select2 = factory('#field:select2', value=value, props={
         'label': 'Select or add some items',
         'inputtag': True,
         'placeholder': 'Select or add some items',
@@ -84,16 +86,16 @@ Select2 widget in input mode.
 """
 
 
-TITLE_SELECT2_4 = "Fetch selection values from ajax URL"
+TITLE_SELECT2_4 = "Single selection from ajax URL"
 DOC_SELECT2_4 = """
-Select2 widget fetching data from URL.
+Select2 single selection widget fetching data from URL.
 
 .. code-block:: python
 
-    select2 = factory('#field:select2', props={
-        'label': 'Select ajax items',
+    select2 = factory('#field:select2', value='Welschriesling', props={
+        'label': 'Select ajax item',
         'inputtag': True,
-        'placeholder': 'Select some items',
+        'placeholder': 'Select some item',
         'ajaxurl': 'yafowil.widget.select2.json',
     })
 
@@ -122,6 +124,25 @@ used
 """
 
 
+TITLE_SELECT2_5 = "Multi selection from ajax URL"
+DOC_SELECT2_5 = """
+Select2 multi selection widget fetching data from URL.
+
+.. code-block:: python
+
+    value = [u'Sämling', u'Traminer']
+    select2 = factory('#field:select2', value=value, props={
+        'label': 'Select multiple ajax items',
+        'inputtag': True,
+        'minimumInputLength': 1,
+        'multiple': True,
+        'placeholder': 'Select some items',
+        'ajaxurl': 'yafowil.widget.select2.json',
+    })
+
+"""
+
+
 def get_example():
 
     vocab = sorted((u'Weißburgunder', u'Welschriesling',
@@ -130,7 +151,7 @@ def get_example():
 
     # single selection
     select2_1 = factory(u'fieldset', name='yafowil_select2_1')
-    select2_1['text'] = factory('#field:select2', props={
+    select2_1['text'] = factory('#field:select2', value='Traminer', props={
         'label': 'Select some items',
         'placeholder': 'Select some items',
         'vocabulary': vocab,
@@ -138,7 +159,8 @@ def get_example():
 
     # multiple selection
     select2_2 = factory(u'fieldset', name='yafowil_select2_2')
-    select2_2['text'] = factory('#field:select2', props={
+    select2_2_val = [u'Sauvingnon Blanc', u'Sämling']
+    select2_2['text'] = factory('#field:select2', value=select2_2_val, props={
         'label': 'Select some items',
         'placeholder': 'Select some items',
         'vocabulary': vocab,
@@ -147,7 +169,8 @@ def get_example():
 
     # input mode
     select2_3 = factory(u'fieldset', name='yafowil_select2_3')
-    select2_3['text'] = factory('#field:select2', props={
+    select2_3_val = [u'Sämling', u'Scheurebe']
+    select2_3['text'] = factory('#field:select2', value=select2_3_val, props={
         'label': 'Select or add some items',
         'inputtag': True,
         'placeholder': 'Select or add some items',
@@ -156,15 +179,29 @@ def get_example():
         'tags': vocab,
     })
 
-    # ajax vocab
+    # ajax single
     select2_4 = factory(u'fieldset', name='yafowil_select2_4')
-    select2_4['text'] = factory('#field:select2', props={
-        'label': 'Select ajax items',
+    select2_4_val = 'Welschriesling'
+    select2_4['text'] = factory('#field:select2', value=select2_4_val, props={
+        'label': 'Select ajax item',
         'inputtag': True,
-        'placeholder': 'Select some items',
+        'placeholder': 'Select some item',
         'ajaxurl': 'yafowil.widget.select2.json',
     })
     select2_4_routes = {'yafowil.widget.select2.json': json_response}
+
+    # ajax multiple
+    select2_5 = factory(u'fieldset', name='yafowil_select2_5')
+    select2_5_val = [u'Sämling', u'Traminer']
+    select2_5['text'] = factory('#field:select2', value=select2_5_val, props={
+        'label': 'Select multiple ajax items',
+        'inputtag': True,
+        'minimumInputLength': 1,
+        'multiple': True,
+        'placeholder': 'Select some items',
+        'ajaxurl': 'yafowil.widget.select2.json',
+    })
+    select2_5_routes = {'yafowil.widget.select2.json': json_response}
 
     return [{'widget': select2_1,
              'doc': DOC_SELECT2_1,
@@ -178,5 +215,9 @@ def get_example():
             {'widget': select2_4,
              'routes': select2_4_routes,
              'doc': DOC_SELECT2_4,
-             'title': TITLE_SELECT2_4}
+             'title': TITLE_SELECT2_4},
+            {'widget': select2_5,
+             'routes': select2_5_routes,
+             'doc': DOC_SELECT2_5,
+             'title': TITLE_SELECT2_5}
            ]

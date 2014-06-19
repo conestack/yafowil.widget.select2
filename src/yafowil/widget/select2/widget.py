@@ -1,5 +1,6 @@
 from yafowil.base import (
     factory,
+    fetch_value,
 )
 from yafowil.common import (
     select_extractor,
@@ -66,6 +67,9 @@ select2_options = [
 @managedprops('inputtag', 'ajaxurl', *select2_options)
 def select2_edit_renderer(widget, data):
     if attr_value('inputtag', widget, data):
+        value = fetch_value(widget, data)
+        if isinstance(value, list) or isinstance(value, tuple):
+            data.value = u','.join(value)
         renderer = input_generic_renderer
     else:
         multiple = attr_value('multiple', widget, data)

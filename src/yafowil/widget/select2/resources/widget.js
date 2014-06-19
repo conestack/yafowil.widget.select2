@@ -71,10 +71,23 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
                                 };
                             },
                             results: function (data, page) {
-                                // parse the results into the format expected
-                                // by Select2.
                                 return {results: data};
                             }
+                        };
+                        options.initSelection = function(element, callback) {
+                            var value = element.val();
+                            if (!value) {
+                                return;
+                            }
+                            if (!options.multiple) {
+                                callback({id: value, text: value});
+                                return;
+                            }
+                            var data = [];
+                            $(element.val().split(",")).each(function() {
+                                data.push({id: this, text: this});
+                            });
+                            callback(data);
                         }
                     }
                     elem.select2(options);
