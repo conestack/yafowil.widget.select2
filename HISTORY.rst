@@ -1,8 +1,8 @@
 History
 =======
 
-1.0dev (unreleased)
--------------------
+1.0
+---
 
 - Make it work.
   [thet]
