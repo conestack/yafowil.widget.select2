@@ -82,13 +82,11 @@ factory.register(
     display_renderers=[select_display_renderer])
 
 factory.doc['blueprint']['select2'] = \
-"""Add-on blueprint `yafowil.widget.select2
-<http://github.com/bluedynamics/yafowil.widget.select2/>`_ .
+"""Add-on blueprint `yafowil.widget.select2 <http://github.com/bluedynamics/yafowil.widget.select2/>`_
 
-Integrates <http://ivaynberg.github.io/select2/>`_ .
+`Integrates Select2 Widget <http://ivaynberg.github.io/select2/>`_
 
-For detailed widget documentation see
-<http://ivaynberg.github.io/select2/#documentation>`_ .
+`Detailed widget documentation <http://ivaynberg.github.io/select2/#documentation>`_
 """
 
 factory.defaults['select2.size'] = None
@@ -560,10 +558,4 @@ factory.doc['props']['select2.nextSearchTerm'] = \
 Function can be used when the dropdown is configured in single and
 multi-select mode. It is triggered after selecting an item. In single mode
 it is also triggered after initSelection (when provided).
-"""
-
-
-factory.defaults['select2.'] = None
-factory.doc['props']['select2.'] = \
-"""
 """
