@@ -1,10 +1,12 @@
+from node.utils import UNSET
 from yafowil.base import (
     factory,
     fetch_value,
 )
 from yafowil.common import (
-    select_extractor,
+    generic_extractor,
     generic_required_extractor,
+    select_extractor,
     select_edit_renderer,
     select_display_renderer,
     input_generic_renderer,
@@ -64,6 +66,23 @@ select2_options = [
 ]
 
 
+@managedprops('inputtag')
+def select2_extractor(widget, data):
+    if attr_value('inputtag', widget, data):
+        extracted = generic_extractor(widget, data)
+        if extracted is UNSET:
+            return extracted
+        if not extracted:
+            if attr_value('multiple', widget, data):
+                return []
+            return ''
+        if attr_value('inputtag', widget, data):
+            if attr_value('multiple', widget, data):
+                extracted = extracted.split(',')
+        return extracted
+    return select_extractor(widget, data)
+
+
 @managedprops('inputtag', 'ajaxurl', *select2_options)
 def select2_edit_renderer(widget, data):
     if attr_value('inputtag', widget, data):
@@ -92,7 +111,7 @@ def select2_display_renderer(widget, data):
 
 factory.register(
     'select2',
-    extractors=[select_extractor, generic_required_extractor],
+    extractors=[select2_extractor, generic_required_extractor],
     edit_renderers=[select2_edit_renderer],
     display_renderers=[select2_display_renderer])
 

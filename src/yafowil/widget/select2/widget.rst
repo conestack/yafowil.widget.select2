@@ -22,14 +22,12 @@ Render multiple::
 
 Render single in tag mode::
 
-    XXX: how to define value here?
     >>> widget = factory('select2', 'single', props={'inputtag': True})
     >>> widget()
     u'<input class="select2" id="input-single" name="single" value="" />'
 
 Render multiple in tag mode::
 
-    XXX: how to define value here?
     >>> widget = factory('select2', 'multi', value=['1', '2'], props={
     ...     'inputtag': True,
     ...     'multiple': True})
@@ -37,25 +35,69 @@ Render multiple in tag mode::
     u'<input class="select2" data-multiple=\'true\' id="input-multi" 
     name="multi" value="1,2" />'
 
-Widget extraction::
+Single value widget extraction::
 
     >>> widget = factory('select2', 'single', props={'required': True})
-    >>> request = {'single': []}
+    >>> request = {}
+    >>> data = widget.extract(request)
+    >>> data.extracted
+    <UNSET>
+
+    >>> request = {'single': ''}
     >>> data = widget.extract(request)
 
     >>> data.errors
     [ExtractionError('Mandatory field was empty',)]
 
     >>> data.extracted
-    []
+    ''
 
-    >>> request = {'single': ['1']}
+    >>> request = {'single': '1'}
     >>> data = widget.extract(request)
     >>> data.errors
     []
 
     >>> data.extracted
-    ['1']
+    '1'
+
+    >>> widget = factory('select2', 'single', props={
+    ...     'inputtag': True})
+
+    >>> request = {}
+    >>> data = widget.extract(request)
+    >>> data.extracted
+    <UNSET>
+
+    >>> request = {'single': ''}
+    >>> data = widget.extract(request)
+    >>> data.extracted
+    ''
+
+    >>> request = {'single': '1'}
+    >>> data = widget.extract(request)
+    >>> data.extracted
+    '1'
+
+Multi value widget extraction::
+
+    >>> widget = factory('select2', 'multi', props={
+    ...     'multiple': True,
+    ...     'inputtag': True})
+
+    >>> request = {}
+    >>> data = widget.extract(request)
+    >>> data.extracted
+    <UNSET>
+
+    >>> request = {'multi': ''}
+    >>> data = widget.extract(request)
+    >>> data.extracted
+    []
+
+    >>> request = {'multi': '1,2'}
+    >>> data = widget.extract(request)
+    >>> data.extracted
+    ['1', '2']
 
 Display renderer::
 
