@@ -18,15 +18,8 @@ The sources are in a GIT DVCS with its main branches at
 
 We'd be happy to see many forks and pull-requests to make YAFOWIL even better.
 
-The source code of Select2 can be found on `github
-https://github.com/ivaynberg/select2`_.
-
-TODO
-====
-
-- One or Two TODO's spread over in source code (widget.js).
-
-- Tests.
+The source code of Select2 can be found on
+`github https://github.com/ivaynberg/select2`_.
 
 Contributors
 ============
