@@ -35,6 +35,18 @@ Render multiple in tag mode::
     u'<input class="select2" data-multiple=\'true\' id="input-multi" 
     name="multi" value="1,2" />'
 
+Provide a vocabulary if value terms consists of id / label pairs::
+
+    >>> widget = factory('select2', 'multi', value=['1', '2'], props={
+    ...     'inputtag': True,
+    ...     'multiple': True,
+    ...     'vocabulary': {'1': 'Label 1', '2': 'Label 2'},
+    ... })
+    >>> widget()
+    u'<input class="select2" data-multiple=\'true\' 
+    data-vocabulary=\'{"1": "Label 1", "2": "Label 2"}\' 
+    id="input-multi" name="multi" value="1,2" />'
+
 Single value widget extraction::
 
     >>> widget = factory('select2', 'single', props={'required': True})

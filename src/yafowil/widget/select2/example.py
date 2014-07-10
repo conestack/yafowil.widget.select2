@@ -145,13 +145,18 @@ Select2 multi selection widget fetching data from URL.
 
 TITLE_SELECT2_6 = "Tagging mode with ajax"
 DOC_SELECT2_6 = """
-Select2 tagging selection widget fetching data from URL.
+Select2 tagging selection widget fetching data from URL. Also provide a
+vocabulary defining terms for values.
 
 .. code-block:: python
 
-    value = [u'Sämling', u'Traminer', u'Welschriesling']
+    value = ['a', 'b', 'c']
+    vocabulary = [('a', u'Sämling'),
+                  ('b', u'Traminer'),
+                  ('c', u'Welschriesling')]
     select2 = factory('#field:select2', value=value, props={
         'label': 'Select tags',
+        'vocabulary': vocabulary,
         'inputtag': True,
         'minimumInputLength': 1,
         'multiple': True,
@@ -225,9 +230,13 @@ def get_example():
 
     # ajax tagging
     select2_6 = factory(u'fieldset', name='yafowil_select2_6')
-    select2_6_val = [u'Sämling', u'Traminer', u'Welschriesling']
+    select2_6_val = ['a', 'b', 'c']
+    select2_6_vocab = [('a', u'Sämling'),
+                       ('b', u'Traminer'),
+                       ('c', u'Welschriesling')]
     select2_6['text'] = factory('#field:select2', value=select2_6_val, props={
         'label': 'Select tags',
+        'vocabulary': select2_6_vocab,
         'inputtag': True,
         'minimumInputLength': 1,
         'multiple': True,

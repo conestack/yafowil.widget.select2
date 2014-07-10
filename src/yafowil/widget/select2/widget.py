@@ -15,6 +15,7 @@ from yafowil.utils import (
     managedprops,
     data_attrs_helper,
     attr_value,
+    vocabulary,
 )
 
 
@@ -89,15 +90,24 @@ def select2_edit_renderer(widget, data):
         value = fetch_value(widget, data)
         if isinstance(value, list) or isinstance(value, tuple):
             data.value = u','.join(value)
+        # force widget vocabulary as dict to make JS happy
+        vocab = vocabulary(attr_value('vocabulary', widget, data, []))
+        if vocab:
+            dict_vocab = dict()
+            for key, term in vocab:
+                dict_vocab[key] = term
+            widget.attrs['vocabulary'] = dict_vocab
+        custom_attrs = data_attrs_helper(
+            widget, data, ['ajaxurl', 'vocabulary'] + select2_options)
         renderer = input_generic_renderer
     else:
         multiple = attr_value('multiple', widget, data)
         if multiple:
             widget.attrs['multivalued'] = True
             del widget.attrs['multiple']
+        custom_attrs = data_attrs_helper(
+            widget, data, ['ajaxurl'] + select2_options)
         renderer = select_edit_renderer
-    custom_attrs = data_attrs_helper(
-        widget, data, ['ajaxurl'] + select2_options)
     return renderer(widget, data, custom_attrs=custom_attrs)
 
 

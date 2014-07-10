@@ -4,6 +4,9 @@ History
 1.1.dev0
 --------
 
+- ``select2`` provides key/term vocabularies for preselected items.
+  [rnix, 2014-07-10]
+
 - Remove ``select2input`` blueprint, use ``inputtag`` property of ``select2``
   blueprint instead.
   [rnix, 2014-06-19]

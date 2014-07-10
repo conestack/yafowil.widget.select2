@@ -84,13 +84,24 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
                             if (!value) {
                                 return;
                             }
+                            var vocabulary = element.data('vocabulary');
+                            var label = function(key) {
+                                if (!vocabulary) {
+                                    return key;
+                                }
+                                var term = vocabulary[key];
+                                if (!term) {
+                                    return key;
+                                }
+                                return term
+                            }
                             if (!options.multiple) {
-                                callback({id: value, text: value});
+                                callback({id: value, text: label(value)});
                                 return;
                             }
                             var data = [];
                             $(element.val().split(",")).each(function() {
-                                data.push({id: this, text: this});
+                                data.push({id: this, text: label(this)});
                             });
                             callback(data);
                         }
