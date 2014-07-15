@@ -87,9 +87,23 @@ def select2_extractor(widget, data):
 @managedprops('inputtag', 'ajaxurl', *select2_options)
 def select2_edit_renderer(widget, data):
     if attr_value('inputtag', widget, data):
-        value = fetch_value(widget, data)
-        if isinstance(value, list) or isinstance(value, tuple):
-            data.value = u','.join(value)
+        extracted = UNSET
+        reset_extracted = False
+        if data.extracted is not UNSET:
+            extracted = data.extracted
+            if isinstance(extracted, list) or isinstance(extracted, tuple):
+                reset_extracted = True
+                data.extracted = u','.join(extracted)
+        value = UNSET
+        reset_value = False
+        if data.value is not UNSET:
+            value = data.value
+            if isinstance(value, list) or isinstance(value, tuple):
+                reset_value = True
+                data.value = u','.join(value)
+        else:
+            reset_value = True
+            data.value = u''
         # force widget vocabulary as dict to make JS happy
         vocab = vocabulary(attr_value('vocabulary', widget, data, []))
         if vocab:
@@ -100,6 +114,11 @@ def select2_edit_renderer(widget, data):
         custom_attrs = data_attrs_helper(
             widget, data, ['ajaxurl', 'vocabulary'] + select2_options)
         renderer = input_generic_renderer
+        rendered = renderer(widget, data, custom_attrs=custom_attrs)
+        if reset_extracted:
+            data.extracted = extracted
+        if reset_value:
+            data.value = value
     else:
         multiple = attr_value('multiple', widget, data)
         if multiple:
@@ -108,7 +127,8 @@ def select2_edit_renderer(widget, data):
         custom_attrs = data_attrs_helper(
             widget, data, ['ajaxurl'] + select2_options)
         renderer = select_edit_renderer
-    return renderer(widget, data, custom_attrs=custom_attrs)
+        rendered = renderer(widget, data, custom_attrs=custom_attrs)
+    return rendered
 
 
 def select2_display_renderer(widget, data):

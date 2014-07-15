@@ -111,6 +111,37 @@ Multi value widget extraction::
     >>> data.extracted
     ['1', '2']
 
+Widget with preset value::
+
+    >>> widget = factory('select2', 'multi', props={
+    ...     'value': ['1', '2'],
+    ...     'multiple': True,
+    ...     'inputtag': True})
+
+    >>> pxml(widget(data=data))
+    <input class="select2" data-multiple="true" id="input-multi" name="multi" 
+    value="1,2"/>
+
+    >>> request = {'multi': '1,2,3'}
+    >>> data = widget.extract(request)
+
+    >>> pxml(widget(data=data))
+    <input class="select2" data-multiple="true" id="input-multi" name="multi" 
+    value="1,2,3"/>
+
+    >>> data.extracted
+    ['1', '2', '3']
+
+    >>> request = {'multi': ''}
+    >>> data = widget.extract(request)
+
+    >>> pxml(widget(data=data))
+    <input class="select2" data-multiple="true" id="input-multi" name="multi" 
+    value=""/>
+
+    >>> data.extracted
+    []
+
 Display renderer::
 
     >>> widget = factory('select2', 'empty', mode='display')
