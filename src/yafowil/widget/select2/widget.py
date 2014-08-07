@@ -166,7 +166,7 @@ factory.doc['props']['select2.inputtag'] = \
 
 factory.defaults['select2.ajaxurl'] = None
 factory.doc['props']['select2.ajaxurl'] = \
-"""Ajax URL to JSON view returning an array of objects like:
+"""Ajax URL to JSON view returning an array of objects like::
 
     [{id: 'id', text: 'text'}]
 """
@@ -295,7 +295,7 @@ and Select2 is closed. By default this option is enabled.
 factory.defaults['select2.id'] = None
 factory.doc['props']['select2.id'] = \
 """Function used to get the id from the choice object or a string representing
-the key under which the id is stored.
+the key under which the id is stored::
 
     id(object)
 
@@ -307,12 +307,12 @@ factory.defaults['select2.matcher'] = None
 factory.doc['props']['select2.matcher'] = \
 """Used to determine whether or not the search term matches an option when a
 built-in query function is used. The built in query function is used when
-Select2 is attached to a select, or the local or tags helpers are used.
+Select2 is attached to a select, or the local or tags helpers are used::
 
     matcher(term, text, option)
 
 The default implementation is case insensitive and matches anywhere in the
-term:
+term::
 
     function(term, text) {
         return text.toUpperCase().indexOf(term.toUpperCase()) >= 0;
@@ -322,11 +322,11 @@ term:
 factory.defaults['select2.sortResults'] = None
 factory.doc['props']['select2.sortResults'] = \
 """Used to sort the results list for searching right before display.
-Useful for sorting matches by relevance to the user's search term.
+Useful for sorting matches by relevance to the user's search term::
 
     sortResults(results, container, query)
 
-Defaults to no sorting:
+Defaults to no sorting::
 
     function(results, container, query) {
         return results;
@@ -335,7 +335,7 @@ Defaults to no sorting:
 
 factory.defaults['select2.formatSelection'] = None
 factory.doc['props']['select2.formatSelection'] = \
-"""Function used to render the current selection.
+"""Function used to render the current selection::
 
     formatSelection(object, container)
 
@@ -346,7 +346,7 @@ The implementation may choose to append elements directly to the provided
 container object, or return a single value and have it automatically appended.
 
 When attached to a select the original <option> (or <optgroup>) element is
-accessible inside the specified function through the property item.element:
+accessible inside the specified function through the property item.element::
 
     format(item) {
         var originalOption = item.element;
@@ -356,7 +356,7 @@ accessible inside the specified function through the property item.element:
 
 factory.defaults['select2.formatResult'] = None
 factory.doc['props']['select2.formatResult'] = \
-"""Function used to render a result that the user can select.
+"""Function used to render a result that the user can select::
 
     formatResult(object, container, query)
 
@@ -367,7 +367,7 @@ The implementation may choose to append elements directly to the provided
 container object, or return a single value and have it automatically appended.
 
 When attached to a select the original <option> (or <optgroup>) element is
-accessible inside the specified function through the property item.element:
+accessible inside the specified function through the property item.element::
 
     format(item) {
         var originalOption = item.element;
@@ -377,7 +377,7 @@ accessible inside the specified function through the property item.element:
 
 factory.defaults['select2.formatResultCssClass'] = None
 factory.doc['props']['select2.formatResultCssClass'] = \
-"""Function used to add css classes to result elements.
+"""Function used to add css classes to result elements::
 
     formatResultCssClass(object)
 
@@ -388,7 +388,7 @@ automatically copied.
 factory.defaults['select2.formatNoMatches'] = None
 factory.doc['props']['select2.formatNoMatches'] = \
 """String containing "No matches" message, or
-Function used to render the message
+Function used to render the message::
 
     formatNoMatches(term)
 """
@@ -397,7 +397,7 @@ factory.defaults['select2.formatSearching'] = None
 factory.doc['props']['select2.formatSearching'] = \
 """String containing "Searching..." message, or
 Function used to render the message that is displayed while search is in
-progress.
+progress::
 
     formatSearching()
 """
@@ -405,7 +405,7 @@ progress.
 factory.defaults['select2.formatInputTooShort'] = None
 factory.doc['props']['select2.formatInputTooShort'] = \
 """String containing "Search input too short" message, or Function used to
-render the message.
+render the message::
 
     formatInputTooShort(term, minLength)
 """
@@ -413,7 +413,7 @@ render the message.
 factory.defaults['select2.formatInputTooLong'] = None
 factory.doc['props']['select2.formatInputTooLong'] = \
 """String containing "Search input too long" message, or Function used to
-render the message.
+render the message::
 
     formatInputTooLong(term, maxLength)
 """
@@ -421,7 +421,7 @@ render the message.
 factory.defaults['select2.formatSelectionTooBig'] = None
 factory.doc['props']['select2.formatSelectionTooBig'] = \
 """String containing "You cannot select any more choices" message, or Function
-used to render the message.
+used to render the message::
 
     formatSelectionTooBig(maxSize)
 """
@@ -429,7 +429,7 @@ used to render the message.
 factory.defaults['select2.formatLoadMore'] = None
 factory.doc['props']['select2.formatLoadMore'] = \
 """String containing "Loading more results" message, or Function used to
-render the message.
+render the message::
 
     formatLoadMore(pageNumber)
 """
@@ -438,7 +438,7 @@ factory.defaults['select2.createSearchChoice'] = None
 factory.doc['props']['select2.createSearchChoice'] = \
 """Creates a new selectable choice from user's search term. Allows creation of
 choices not available via the query function. Useful when the user can create
-choices on the fly, eg for the 'tagging' usecase.
+choices on the fly, eg for the 'tagging' usecase::
 
     createSearchChoice(term)
 
@@ -460,18 +460,17 @@ top
     Insert in the top of the list
 bottom
     Insert at the end of the list
-<function>
-
+function
     A custom function. For example if you want to insert the new item in the
-    second position:
+    second position::
 
-    $("#tags").select2({
-        ...
-        createSearchChoice: function(term) { ... },
-        createSearchChoicePosition: function(list, item) {
-            list.splice(1, 0, item);
-        }
-    });
+        $("#tags").select2({
+            ...
+            createSearchChoice: function(term) { ... },
+            createSearchChoicePosition: function(list, item) {
+                list.splice(1, 0, item);
+            }
+        });
 """
 
 factory.defaults['select2.initSelection'] = None
@@ -479,7 +478,7 @@ factory.doc['props']['select2.initSelection'] = \
 """Called when Select2 is created to allow the user to initialize the
 selection based on the value of the element select2 is attached to.
 
-Essentially this is an id->object mapping function.
+Essentially this is an id->object mapping function::
 
     initSelection(element, callback)
 
@@ -493,7 +492,7 @@ every keystroke and extract and select choices. This is useful, for example,
 in tagging scenarios where the user can create tags quickly by separating
 them with a comma or a space instead of pressing enter.
 
-Tokenizer only applies to multi-selects.
+Tokenizer only applies to multi-selects::
 
     tokenizer(input, selection, selectCallback, opts)
 """
@@ -508,7 +507,7 @@ to set this option to a value similar to [',', ' '].
 
 factory.defaults['select2.query'] = None
 factory.doc['props']['select2.query'] = \
-"""Function used to query results for the search term.
+"""Function used to query results for the search term::
 
     query(options)
 
@@ -582,7 +581,7 @@ based on content inside.
 factory.defaults['select2.adaptContainerCssClass'] = None
 factory.doc['props']['select2.adaptContainerCssClass'] = \
 """Function that filters/renames css classes as they are copied from the
-source tag to the select2 container tag.
+source tag to the select2 container tag::
 
     adaptContainerCssClass(clazz)
 
@@ -592,7 +591,7 @@ The default implementation applies all classes without modification.
 factory.defaults['select2.adaptDropdownCssClass'] = None
 factory.doc['props']['select2.adaptDropdownCssClass'] = \
 """Function that filters/renames css classes as they are copied from the
-source tag to the select2 dropdown tag.
+source tag to the select2 dropdown tag::
 
     adaptDropdownCssClass(clazz)
 
