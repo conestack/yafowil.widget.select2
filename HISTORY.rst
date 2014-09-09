@@ -1,8 +1,8 @@
 History
 =======
 
-1.1.dev0
---------
+1.1 (Unreleased)
+----------------
 
 - ``select2`` provides key/term vocabularies for preselected items.
   [rnix, 2014-07-10]
