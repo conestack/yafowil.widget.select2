@@ -1,7 +1,7 @@
 History
 =======
 
-1.1 (Unreleased)
+1.1 (2015-01-23)
 ----------------
 
 - ``select2`` provides key/term vocabularies for preselected items.
