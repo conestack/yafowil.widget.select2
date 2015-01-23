@@ -6,7 +6,7 @@ from setuptools import (
 
 
 version = '1.1'
-shortdesc = 'Chosen select/autocomplete widget for YAFOWIL'
+shortdesc = 'Select2 widget for YAFOWIL'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'HISTORY.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
