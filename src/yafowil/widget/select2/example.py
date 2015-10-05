@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+from yafowil.base import factory
 import json
 import urlparse
-from yafowil.base import factory
 
 
 def json_response(url):

@@ -1,22 +1,16 @@
 from node.utils import UNSET
-from yafowil.base import (
-    factory,
-    fetch_value,
-)
-from yafowil.common import (
-    generic_extractor,
-    generic_required_extractor,
-    select_extractor,
-    select_edit_renderer,
-    select_display_renderer,
-    input_generic_renderer,
-)
-from yafowil.utils import (
-    managedprops,
-    data_attrs_helper,
-    attr_value,
-    vocabulary,
-)
+from yafowil.base import factory
+from yafowil.base import fetch_value
+from yafowil.common import generic_extractor
+from yafowil.common import generic_required_extractor
+from yafowil.common import select_extractor
+from yafowil.common import select_edit_renderer
+from yafowil.common import select_display_renderer
+from yafowil.common import input_generic_renderer
+from yafowil.utils import managedprops
+from yafowil.utils import data_attrs_helper
+from yafowil.utils import attr_value
+from yafowil.utils import vocabulary
 
 
 select2_options = [
