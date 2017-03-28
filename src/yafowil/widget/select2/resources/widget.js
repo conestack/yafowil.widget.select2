@@ -106,7 +106,11 @@ if (typeof(window.yafowil) == "undefined") yafowil = {};
                             callback(data);
                         }
                     }
-                    elem.select2(options);
+                    try {
+                        elem.select2(options);
+                    } catch(error) {
+                        console.log('Failed to initialize select2: ' + error);
+                    }
                 });
             }
         }

@@ -5,7 +5,8 @@ History
 1.3 (unreleased)
 ----------------
 
-- No changes yet.
+- Catch and log exception if select2 cannot be initialized.
+  [rnix, 2017-03-28]
 
 
 1.2 (2017-03-01)
