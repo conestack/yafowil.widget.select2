@@ -2,7 +2,7 @@
 History
 =======
 
-1.3 (unreleased)
+1.3 (2017-03-28)
 ----------------
 
 - Catch and log exception if select2 cannot be initialized.
