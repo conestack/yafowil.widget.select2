@@ -1,13 +1,17 @@
-from node.tests import NodeTestCase
 from node.utils import UNSET
 from yafowil.base import ExtractionError
 from yafowil.base import factory
+from yafowil.tests import YafowilTestCase
 from yafowil.tests import fxml
-import yafowil.widget.select2
 import yafowil.loader
 
 
-class TestSelect2Widget(NodeTestCase):
+class TestSelect2Widget(YafowilTestCase):
+
+    def setUp(self):
+        super(TestSelect2Widget, self).setUp()
+        from yafowil.widget.select2 import widget
+        reload(widget)
 
     def test_render_single(self):
         widget = factory(
