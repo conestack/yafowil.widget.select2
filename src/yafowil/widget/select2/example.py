@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-
 from yafowil.base import factory
+from yafowil.compat import IS_PY2
 import json
 
-from yafowil.compat import IS_PY2
 
 if IS_PY2:
     from urlparse import urlparse
