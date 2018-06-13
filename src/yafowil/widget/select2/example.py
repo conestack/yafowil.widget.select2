@@ -1,15 +1,26 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 from yafowil.base import factory
 import json
-import urlparse
+
+from yafowil.compat import IS_PY2
+
+if IS_PY2:
+    from urlparse import urlparse
+    from urlparse import parse_qs
+else:
+    from urllib.parse import urlparse
+    from urllib.parse import parse_qs
 
 
 def json_response(url):
-    purl = urlparse.urlparse(url)
-    qs = urlparse.parse_qs(purl.query)
+    purl = urlparse(url)
+    qs = parse_qs(purl.query)
     data = json_data(qs.get('q', [''])[0])
-    return {'body': json.dumps(data),
-            'header': [('Content-Type', 'application/json')]
+    return {
+        'body': json.dumps(data),
+        'header': [('Content-Type', 'application/json')]
     }
 
 
@@ -25,8 +36,8 @@ def json_data(term):
                     'id': val,
                     'text': val,
                 })
-    print term
-    print data
+    print(term)
+    print(data)
     return data
 
 
