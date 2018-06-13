@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from node.utils import UNSET
 from yafowil.base import ExtractionError
 from yafowil.base import factory
@@ -72,6 +73,9 @@ class TestSelect2Widget(YafowilTestCase):
 
     def test_render_with_vocabulary(self):
         # Provide a vocabulary if value terms consists of id / label pairs
+        vocab = OrderedDict()
+        vocab['1'] = 'Label 1'
+        vocab['2'] = 'Label 2'
         widget = factory(
             'select2',
             name='multi',
@@ -79,7 +83,7 @@ class TestSelect2Widget(YafowilTestCase):
             props={
                 'inputtag': True,
                 'multiple': True,
-                'vocabulary': {'1': 'Label 1', '2': 'Label 2'},
+                'vocabulary': vocab,
             })
         self.assertEqual(widget(), (
             '<input class="select2" data-multiple=\'true\' '

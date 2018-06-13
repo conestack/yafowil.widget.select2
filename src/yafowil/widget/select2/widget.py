@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from node.utils import UNSET
 from yafowil.base import factory
 from yafowil.base import fetch_value
@@ -101,7 +102,8 @@ def select2_edit_renderer(widget, data):
         # force widget vocabulary as dict to make JS happy
         vocab = vocabulary(attr_value('vocabulary', widget, data, []))
         if vocab:
-            dict_vocab = dict()
+            # Use ordered dict to ensure order in tests
+            dict_vocab = OrderedDict()
             for key, term in vocab:
                 dict_vocab[key] = term
             widget.attrs['vocabulary'] = dict_vocab
