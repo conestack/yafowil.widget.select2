@@ -1,16 +1,15 @@
 from collections import OrderedDict
 from node.utils import UNSET
 from yafowil.base import factory
-from yafowil.base import fetch_value
 from yafowil.common import generic_extractor
 from yafowil.common import generic_required_extractor
-from yafowil.common import select_extractor
-from yafowil.common import select_edit_renderer
-from yafowil.common import select_display_renderer
 from yafowil.common import input_generic_renderer
-from yafowil.utils import managedprops
-from yafowil.utils import data_attrs_helper
+from yafowil.common import select_display_renderer
+from yafowil.common import select_edit_renderer
+from yafowil.common import select_extractor
 from yafowil.utils import attr_value
+from yafowil.utils import data_attrs_helper
+from yafowil.utils import managedprops
 from yafowil.utils import vocabulary
 
 
@@ -141,8 +140,9 @@ factory.register(
     edit_renderers=[select2_edit_renderer],
     display_renderers=[select2_display_renderer])
 
-factory.doc['blueprint']['select2'] = \
-"""Add-on blueprint `yafowil.widget.select2 <http://github.com/bluedynamics/yafowil.widget.select2/>`_
+factory.doc['blueprint']['select2'] = """\
+Add-on blueprint
+`yafowil.widget.select2 <http://github.com/bluedynamics/yafowil.widget.select2/>`_
 
 `Integrates Select2 Widget <http://ivaynberg.github.io/select2/>`_
 
@@ -156,50 +156,54 @@ factory.defaults['select2.format'] = 'block'
 factory.defaults['select2.class'] = 'select2'
 
 factory.defaults['select2.inputtag'] = False
-factory.doc['props']['select2.inputtag'] = \
-"""Render widget as input element instead of selection.
+factory.doc['props']['select2.inputtag'] = """\
+Render widget as input element instead of selection.
 """
 
 factory.defaults['select2.ajaxurl'] = None
-factory.doc['props']['select2.ajaxurl'] = \
-"""Ajax URL to JSON view returning an array of objects like::
+factory.doc['props']['select2.ajaxurl'] = """\
+Ajax URL to JSON view returning an array of objects like::
 
     [{id: 'id', text: 'text'}]
 """
 
 factory.defaults['select2.width'] = None
-factory.doc['props']['select2.width'] = \
-"""Controls the width style attribute of the Select2 container div.
+factory.doc['props']['select2.width'] = """\
+Controls the width style attribute of the Select2 container div.
 The following values are supported:
 
 off
     No width attribute will be set. Keep in mind that the container div copies
     classes from the source element so setting the width attribute may not
     always be necessary.
+
 element
     Uses javascript to calculate the width of the source element.
+
 copy
     Copies the value of the width style attribute set on the source element.
+
 resolve
     First attempts to copy than falls back on element.
+
 other values
     if the width attribute contains a function it will be evaluated, otherwise
     the value is used verbatim.
 """
 
 factory.defaults['select2.minimumInputLength'] = None
-factory.doc['props']['select2.minimumInputLength'] = \
-"""Number of characters necessary to start a search.
+factory.doc['props']['select2.minimumInputLength'] = """\
+Number of characters necessary to start a search.
 """
 
 factory.defaults['select2.maximumInputLength'] = None
-factory.doc['props']['select2.maximumInputLength'] = \
-"""Maximum number of characters that can be entered for an input.
+factory.doc['props']['select2.maximumInputLength'] = """\
+Maximum number of characters that can be entered for an input.
 """
 
 factory.defaults['select2.minimumResultsForSearch'] = None
-factory.doc['props']['select2.minimumResultsForSearch'] = \
-"""The minimum number of results that must be initially (after opening the
+factory.doc['props']['select2.minimumResultsForSearch'] = """\
+The minimum number of results that must be initially (after opening the
 dropdown for the first time) populated in order to keep the search field.
 This is useful for cases where local data is used with just a few results,
 in which case the search box is not very useful and wastes screen space.
@@ -210,8 +214,8 @@ Only applies to single-value select boxes.
 """
 
 factory.defaults['select2.maximumSelectionSize'] = None
-factory.doc['props']['select2.maximumSelectionSize'] = \
-"""The maximum number of items that can be selected in a multi-select control.
+factory.doc['props']['select2.maximumSelectionSize'] = """\
+The maximum number of items that can be selected in a multi-select control.
 If this number is less than 1 selection is not limited.
 
 Once the number of selected items reaches the maximum specified the contents
@@ -219,8 +223,8 @@ of the dropdown will be populated by the formatSelectionTooBig function.
 """
 
 factory.defaults['select2.placeholder'] = None
-factory.doc['props']['select2.placeholder'] = \
-"""Initial value that is selected if no other selection is made.
+factory.doc['props']['select2.placeholder'] = """\
+Initial value that is selected if no other selection is made.
 
 The placeholder can also be specified as a data-placeholder attribute on the
 select or input element that Select2 is attached to.
@@ -231,8 +235,8 @@ non-multi-value select boxes an empty first option element must be provided
 """
 
 factory.defaults['select2.placeholderOption'] = None
-factory.doc['props']['select2.placeholderOption'] = \
-"""When attached to a select resolves the option that should be used as the
+factory.doc['props']['select2.placeholderOption'] = """\
+When attached to a select resolves the option that should be used as the
 placeholder. Can either be a function which given the select element should
 return the option element or a string first to indicate that the first option
 should be used.
@@ -242,14 +246,14 @@ it has no value and no text is not suitable.
 """
 
 factory.defaults['select2.separator'] = None
-factory.doc['props']['select2.separator'] = \
-"""Separator character or string used to delimit ids in value attribute of the
+factory.doc['props']['select2.separator'] = """\
+Separator character or string used to delimit ids in value attribute of the
 multi-valued selects. The default delimiter is the , character.
 """
 
-factory.defaults['select2.allowClear'] = None;
-factory.doc['props']['select2.allowClear'] = \
-"""Whether or not a clear button is displayed when the select box has a
+factory.defaults['select2.allowClear'] = None
+factory.doc['props']['select2.allowClear'] = """\
+Whether or not a clear button is displayed when the select box has a
 selection. The button, when clicked, resets the value of the select box back
 to the placeholder, thus this option is only available when the placeholder is
 specified.
@@ -266,16 +270,16 @@ option.
 """
 
 factory.defaults['select2.multiple'] = None
-factory.doc['props']['select2.multiple'] = \
-"""Whether or not Select2 allows selection of multiple values.
+factory.doc['props']['select2.multiple'] = """\
+Whether or not Select2 allows selection of multiple values.
 
 When Select2 is attached to a select element this value will be ignored and
 select's multiple attribute will be used instead.
 """
 
 factory.defaults['select2.closeOnSelect'] = None
-factory.doc['props']['select2.closeOnSelect'] = \
-"""If set to false the dropdown is not closed after a selection is made,
+factory.doc['props']['select2.closeOnSelect'] = """\
+If set to false the dropdown is not closed after a selection is made,
 allowing for rapid selection of multiple items. By default this option is set
 to true.
 
@@ -283,14 +287,14 @@ Only applies when configured in multi-select mode.
 """
 
 factory.defaults['select2.openOnEnter'] = None
-factory.doc['props']['select2.openOnEnter'] = \
-"""If set to true the dropdown is opened when the user presses the enter key
+factory.doc['props']['select2.openOnEnter'] = """\
+If set to true the dropdown is opened when the user presses the enter key
 and Select2 is closed. By default this option is enabled.
 """
 
 factory.defaults['select2.id'] = None
-factory.doc['props']['select2.id'] = \
-"""Function used to get the id from the choice object or a string representing
+factory.doc['props']['select2.id'] = """\
+Function used to get the id from the choice object or a string representing
 the key under which the id is stored::
 
     id(object)
@@ -300,8 +304,8 @@ returned.
 """
 
 factory.defaults['select2.matcher'] = None
-factory.doc['props']['select2.matcher'] = \
-"""Used to determine whether or not the search term matches an option when a
+factory.doc['props']['select2.matcher'] = """\
+Used to determine whether or not the search term matches an option when a
 built-in query function is used. The built in query function is used when
 Select2 is attached to a select, or the local or tags helpers are used::
 
@@ -316,8 +320,8 @@ term::
 """
 
 factory.defaults['select2.sortResults'] = None
-factory.doc['props']['select2.sortResults'] = \
-"""Used to sort the results list for searching right before display.
+factory.doc['props']['select2.sortResults'] = """\
+Used to sort the results list for searching right before display.
 Useful for sorting matches by relevance to the user's search term::
 
     sortResults(results, container, query)
@@ -330,8 +334,8 @@ Defaults to no sorting::
 """
 
 factory.defaults['select2.formatSelection'] = None
-factory.doc['props']['select2.formatSelection'] = \
-"""Function used to render the current selection::
+factory.doc['props']['select2.formatSelection'] = """\
+Function used to render the current selection::
 
     formatSelection(object, container)
 
@@ -351,8 +355,8 @@ accessible inside the specified function through the property item.element::
 """
 
 factory.defaults['select2.formatResult'] = None
-factory.doc['props']['select2.formatResult'] = \
-"""Function used to render a result that the user can select::
+factory.doc['props']['select2.formatResult'] = """\
+Function used to render a result that the user can select::
 
     formatResult(object, container, query)
 
@@ -372,8 +376,8 @@ accessible inside the specified function through the property item.element::
 """
 
 factory.defaults['select2.formatResultCssClass'] = None
-factory.doc['props']['select2.formatResultCssClass'] = \
-"""Function used to add css classes to result elements::
+factory.doc['props']['select2.formatResultCssClass'] = """\
+Function used to add css classes to result elements::
 
     formatResultCssClass(object)
 
@@ -382,16 +386,16 @@ automatically copied.
 """
 
 factory.defaults['select2.formatNoMatches'] = None
-factory.doc['props']['select2.formatNoMatches'] = \
-"""String containing "No matches" message, or
+factory.doc['props']['select2.formatNoMatches'] = """\
+String containing "No matches" message, or
 Function used to render the message::
 
     formatNoMatches(term)
 """
 
 factory.defaults['select2.formatSearching'] = None
-factory.doc['props']['select2.formatSearching'] = \
-"""String containing "Searching..." message, or
+factory.doc['props']['select2.formatSearching'] = """\
+String containing "Searching..." message, or
 Function used to render the message that is displayed while search is in
 progress::
 
@@ -399,40 +403,40 @@ progress::
 """
 
 factory.defaults['select2.formatInputTooShort'] = None
-factory.doc['props']['select2.formatInputTooShort'] = \
-"""String containing "Search input too short" message, or Function used to
+factory.doc['props']['select2.formatInputTooShort'] = """\
+String containing "Search input too short" message, or Function used to
 render the message::
 
     formatInputTooShort(term, minLength)
 """
 
 factory.defaults['select2.formatInputTooLong'] = None
-factory.doc['props']['select2.formatInputTooLong'] = \
-"""String containing "Search input too long" message, or Function used to
+factory.doc['props']['select2.formatInputTooLong'] = """\
+String containing "Search input too long" message, or Function used to
 render the message::
 
     formatInputTooLong(term, maxLength)
 """
 
 factory.defaults['select2.formatSelectionTooBig'] = None
-factory.doc['props']['select2.formatSelectionTooBig'] = \
-"""String containing "You cannot select any more choices" message, or Function
+factory.doc['props']['select2.formatSelectionTooBig'] = """\
+String containing "You cannot select any more choices" message, or Function
 used to render the message::
 
     formatSelectionTooBig(maxSize)
 """
 
 factory.defaults['select2.formatLoadMore'] = None
-factory.doc['props']['select2.formatLoadMore'] = \
-"""String containing "Loading more results" message, or Function used to
+factory.doc['props']['select2.formatLoadMore'] = """\
+String containing "Loading more results" message, or Function used to
 render the message::
 
     formatLoadMore(pageNumber)
 """
 
 factory.defaults['select2.createSearchChoice'] = None
-factory.doc['props']['select2.createSearchChoice'] = \
-"""Creates a new selectable choice from user's search term. Allows creation of
+factory.doc['props']['select2.createSearchChoice'] = """\
+Creates a new selectable choice from user's search term. Allows creation of
 choices not available via the query function. Useful when the user can create
 choices on the fly, eg for the 'tagging' usecase::
 
@@ -448,14 +452,16 @@ is used as a value separator.
 """
 
 factory.defaults['select2.createSearchChoicePosition'] = None
-factory.doc['props']['select2.createSearchChoicePosition'] = \
-"""Define the position where to insert element created by createSearchChoice.
+factory.doc['props']['select2.createSearchChoicePosition'] = """\
+Define the position where to insert element created by createSearchChoice.
 The following values are supported:
 
 top
     Insert in the top of the list
+
 bottom
     Insert at the end of the list
+
 function
     A custom function. For example if you want to insert the new item in the
     second position::
@@ -470,8 +476,8 @@ function
 """
 
 factory.defaults['select2.initSelection'] = None
-factory.doc['props']['select2.initSelection'] = \
-"""Called when Select2 is created to allow the user to initialize the
+factory.doc['props']['select2.initSelection'] = """\
+Called when Select2 is created to allow the user to initialize the
 selection based on the value of the element select2 is attached to.
 
 Essentially this is an id->object mapping function::
@@ -482,8 +488,8 @@ This function will only be called when there is initial input to be processed.
 """
 
 factory.defaults['select2.tokenizer'] = None
-factory.doc['props']['select2.tokenizer'] = \
-"""A tokenizer function can process the input typed into the search field after
+factory.doc['props']['select2.tokenizer'] = """\
+A tokenizer function can process the input typed into the search field after
 every keystroke and extract and select choices. This is useful, for example,
 in tagging scenarios where the user can create tags quickly by separating
 them with a comma or a space instead of pressing enter.
@@ -494,16 +500,16 @@ Tokenizer only applies to multi-selects::
 """
 
 factory.defaults['select2.tokenSeparators'] = None
-factory.doc['props']['select2.tokenSeparators'] = \
-"""An array of strings that define token separators for the default tokenizer
+factory.doc['props']['select2.tokenSeparators'] = """\
+An array of strings that define token separators for the default tokenizer
 function. By default, this option is set to an empty array which means
 tokenization using the default tokenizer is disabled. Usually it is sensible
 to set this option to a value similar to [',', ' '].
 """
 
 factory.defaults['select2.query'] = None
-factory.doc['props']['select2.query'] = \
-"""Function used to query results for the search term::
+factory.doc['props']['select2.query'] = """\
+Function used to query results for the search term::
 
     query(options)
 
@@ -512,8 +518,8 @@ type='hidden' tag instead of a select.
 """
 
 factory.defaults['select2.ajax'] = None
-factory.doc['props']['select2.ajax'] = \
-"""Options for the built in ajax query function. This object acts as a
+factory.doc['props']['select2.ajax'] = """\
+Options for the built in ajax query function. This object acts as a
 shortcut for having to manually write a function that performs ajax requests.
 The built-in function supports more advanced features such as throttling and
 dropping out-of-order responses.
@@ -523,8 +529,8 @@ type='hidden' tag instead of a select.
 """
 
 factory.defaults['select2.data'] = None
-factory.doc['props']['select2.data'] = \
-"""Options for the built in query function that works with arrays.
+factory.doc['props']['select2.data'] = """\
+Options for the built in query function that works with arrays.
 
 If this element contains an array, each element in the array must contain id
 and text keys.
@@ -536,8 +542,8 @@ the text given a data element from the array.
 """
 
 factory.defaults['select2.tags'] = None
-factory.doc['props']['select2.tags'] = \
-"""Puts Select2 into 'tagging' mode where the user can add new choices and
+factory.doc['props']['select2.tags'] = """\
+Puts Select2 into 'tagging' mode where the user can add new choices and
 pre-existing tags are provided via this options attribute which is either an
 array or a function that returns an array of objects or strings. If strings
 are used instead of objects they will be converted into an object that has
@@ -545,38 +551,38 @@ an id and text attribute equal to the value of the string.
 """
 
 factory.defaults['select2.containerCss'] = None
-factory.doc['props']['select2.containerCss'] = \
-"""Inline css that will be added to select2's container. Either an object
+factory.doc['props']['select2.containerCss'] = """\
+Inline css that will be added to select2's container. Either an object
 containing css property/value key pairs or a function that returns such an
 object.
 """
 
 factory.defaults['select2.containerCssClass'] = None
-factory.doc['props']['select2.containerCssClass'] = \
-"""Css class that will be added to select2's container tag.
+factory.doc['props']['select2.containerCssClass'] = """\
+Css class that will be added to select2's container tag.
 """
 
 factory.defaults['select2.dropdownCss'] = None
-factory.doc['props']['select2.dropdownCss'] = \
-"""Inline css that will be added to select2's dropdown container. Either an
+factory.doc['props']['select2.dropdownCss'] = """\
+Inline css that will be added to select2's dropdown container. Either an
 object containing css property/value key pairs or a function that returns such
 an object.
 """
 
 factory.defaults['select2.dropdownCssClass'] = None
-factory.doc['props']['select2.dropdownCssClass'] = \
-"""Css class that will be added to select2's dropdown container.
+factory.doc['props']['select2.dropdownCssClass'] = """\
+Css class that will be added to select2's dropdown container.
 """
 
 factory.defaults['select2.dropdownAutoWidth'] = None
-factory.doc['props']['select2.dropdownAutoWidth'] = \
-"""When set to true attempts to automatically size the width of the dropdown
+factory.doc['props']['select2.dropdownAutoWidth'] = """\
+When set to true attempts to automatically size the width of the dropdown
 based on content inside.
 """
 
 factory.defaults['select2.adaptContainerCssClass'] = None
-factory.doc['props']['select2.adaptContainerCssClass'] = \
-"""Function that filters/renames css classes as they are copied from the
+factory.doc['props']['select2.adaptContainerCssClass'] = """\
+Function that filters/renames css classes as they are copied from the
 source tag to the select2 container tag::
 
     adaptContainerCssClass(clazz)
@@ -585,8 +591,8 @@ The default implementation applies all classes without modification.
 """
 
 factory.defaults['select2.adaptDropdownCssClass'] = None
-factory.doc['props']['select2.adaptDropdownCssClass'] = \
-"""Function that filters/renames css classes as they are copied from the
+factory.doc['props']['select2.adaptDropdownCssClass'] = """\
+Function that filters/renames css classes as they are copied from the
 source tag to the select2 dropdown tag::
 
     adaptDropdownCssClass(clazz)
@@ -596,22 +602,22 @@ classes.
 """
 
 factory.defaults['select2.escapeMarkup'] = None
-factory.doc['props']['select2.escapeMarkup'] = \
-"""String escapeMarkup(String markup)
+factory.doc['props']['select2.escapeMarkup'] = """\
+String escapeMarkup(String markup)
 
 Function used to post-process markup returned from formatter functions. By
 default this function escapes html entities to prevent javascript injection.
 """
 
 factory.defaults['select2.selectOnBlur'] = None
-factory.doc['props']['select2.selectOnBlur'] = \
-"""Set to true if you want Select2 to select the currently highlighted option
+factory.doc['props']['select2.selectOnBlur'] = """\
+Set to true if you want Select2 to select the currently highlighted option
 when it is blurred.
 """
 
 factory.defaults['select2.loadMorePadding'] = None
-factory.doc['props']['select2.loadMorePadding'] = \
-"""Defines how many pixels need to be below the fold before the next page is
+factory.doc['props']['select2.loadMorePadding'] = """\
+Defines how many pixels need to be below the fold before the next page is
 loaded. The default value is 0 which means the result list needs to be
 scrolled all the way to the bottom for the next page of results to be loaded.
 This option can be used to trigger the load sooner, possibly resulting in a
@@ -619,8 +625,8 @@ smoother user experience.
 """
 
 factory.defaults['select2.nextSearchTerm'] = None
-factory.doc['props']['select2.nextSearchTerm'] = \
-"""Function used to determine what the next search term should be.
+factory.doc['props']['select2.nextSearchTerm'] = """\
+Function used to determine what the next search term should be.
 
 Function can be used when the dropdown is configured in single and
 multi-select mode. It is triggered after selecting an item. In single mode

@@ -1,6 +1,3 @@
-yafowil.widget.select2
-======================
-
 This is the Select2 widget for `yafowil <http://pypi.python.org/pypi/yafowil>`_,
 based on `Select2 http://ivaynberg.github.com/select2/`_
 

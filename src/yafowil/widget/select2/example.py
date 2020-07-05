@@ -255,25 +255,31 @@ def get_example():
     })
     select2_6_routes = {'yafowil.widget.select2.json': json_response}
 
-    return [{'widget': select2_1,
-             'doc': DOC_SELECT2_1,
-             'title': TITLE_SELECT2_1},
-            {'widget': select2_2,
-             'doc': DOC_SELECT2_2,
-             'title': TITLE_SELECT2_2},
-            {'widget': select2_3,
-             'doc': DOC_SELECT2_3,
-             'title': TITLE_SELECT2_3},
-            {'widget': select2_4,
-             'routes': select2_4_routes,
-             'doc': DOC_SELECT2_4,
-             'title': TITLE_SELECT2_4},
-            {'widget': select2_5,
-             'routes': select2_5_routes,
-             'doc': DOC_SELECT2_5,
-             'title': TITLE_SELECT2_5},
-            {'widget': select2_6,
-             'routes': select2_6_routes,
-             'doc': DOC_SELECT2_6,
-             'title': TITLE_SELECT2_6}
-           ]
+    return [{
+        'widget': select2_1,
+        'doc': DOC_SELECT2_1,
+        'title': TITLE_SELECT2_1
+    }, {
+        'widget': select2_2,
+        'doc': DOC_SELECT2_2,
+        'title': TITLE_SELECT2_2
+    }, {
+        'widget': select2_3,
+        'doc': DOC_SELECT2_3,
+        'title': TITLE_SELECT2_3
+    }, {
+        'widget': select2_4,
+        'routes': select2_4_routes,
+        'doc': DOC_SELECT2_4,
+        'title': TITLE_SELECT2_4
+    }, {
+        'widget': select2_5,
+        'routes': select2_5_routes,
+        'doc': DOC_SELECT2_5,
+        'title': TITLE_SELECT2_5
+    }, {
+        'widget': select2_6,
+        'routes': select2_6_routes,
+        'doc': DOC_SELECT2_6,
+        'title': TITLE_SELECT2_6
+    }]

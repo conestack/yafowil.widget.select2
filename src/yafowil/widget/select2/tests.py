@@ -4,8 +4,8 @@ from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.compat import IS_PY2
 from yafowil.tests import YafowilTestCase
-from yafowil.tests import fxml
-import yafowil.loader
+import unittest
+import yafowil.loader  # noqa
 
 
 if not IS_PY2:
@@ -28,7 +28,7 @@ class TestSelect2Widget(YafowilTestCase):
             })
         self.assertEqual(widget(), (
             '<select class="select2" id="input-single" name="single" '
-            'required="required" />'
+            'required="required"> </select>'
         ))
 
     def test_render_multiple(self):
@@ -42,7 +42,7 @@ class TestSelect2Widget(YafowilTestCase):
         self.assertEqual(widget(), (
             '<input id="exists-multi" name="multi-exists" type="hidden" '
             'value="exists" /><select class="select2" id="input-multi" '
-            'multiple="multiple" name="multi" required="required" />'
+            'multiple="multiple" name="multi" required="required"> </select>'
         ))
 
     def test_render_single_tag_mode(self):
@@ -192,7 +192,8 @@ class TestSelect2Widget(YafowilTestCase):
             'select2',
             name='empty',
             mode='display')
-        self.assertEqual(widget(),
+        self.assertEqual(
+            widget(),
             '<div class="display-select2" id="display-empty"></div>'
         )
 
@@ -205,7 +206,8 @@ class TestSelect2Widget(YafowilTestCase):
                 'vocabulary': [('foo', 'Foo'), ('bar', 'Bar')]
             },
             mode='display')
-        self.assertEqual(widget(),
+        self.assertEqual(
+            widget(),
             '<div class="display-select2" id="display-single">Foo</div>'
         )
 
@@ -226,4 +228,4 @@ class TestSelect2Widget(YafowilTestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()                                          # pragma: no cover
+    unittest.main()
