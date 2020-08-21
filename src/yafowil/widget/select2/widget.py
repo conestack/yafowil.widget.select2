@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from node.utils import UNSET
 from yafowil.base import factory
-from yafowil.common import generic_extractor
+from yafowil.common import generic_extractor, display_proxy_renderer
 from yafowil.common import generic_required_extractor
 from yafowil.common import input_generic_renderer
 from yafowil.common import select_display_renderer
@@ -138,7 +138,10 @@ factory.register(
     'select2',
     extractors=[select2_extractor, generic_required_extractor],
     edit_renderers=[select2_edit_renderer],
-    display_renderers=[select2_display_renderer])
+    display_renderers=[
+        select2_display_renderer, 
+        display_proxy_renderer
+    ])
 
 factory.doc['blueprint']['select2'] = """\
 Add-on blueprint
