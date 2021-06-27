@@ -139,13 +139,13 @@ factory.register(
     extractors=[select2_extractor, generic_required_extractor],
     edit_renderers=[select2_edit_renderer],
     display_renderers=[
-        select2_display_renderer, 
+        select2_display_renderer,
         display_proxy_renderer
     ])
 
 factory.doc['blueprint']['select2'] = """\
 Add-on blueprint
-`yafowil.widget.select2 <http://github.com/bluedynamics/yafowil.widget.select2/>`_
+`yafowil.widget.select2 <http://github.com/conestack/yafowil.widget.select2/>`_
 
 `Integrates Select2 Widget <http://ivaynberg.github.io/select2/>`_
 
