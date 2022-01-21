@@ -11,9 +11,9 @@
         }
         constructor(elem, ops) {
             this.elem = elem;
-            let options = this.init_options(ops);
+            this.options = this.init_options(ops);
             try {
-                this.elem.select2(options);
+                this.elem.select2(this.options);
             } catch (error) {
                 console.log('Failed to initialize select2: ' + error);
             }
