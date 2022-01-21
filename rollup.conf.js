@@ -16,7 +16,7 @@ export default args => {
             cleanup()
         ],
         output: [{
-            file: 'src/yafowil/widget/select2/yafowil.widget.select2.js',
+            file: 'src/yafowil/widget/select2/resources/widget.js',
             format: 'iife',
             outro: outro,
             globals: {
@@ -32,7 +32,7 @@ export default args => {
     };
     if (args.configDebug !== true) {
         conf.output.push({
-            file: 'src/yafowil/widget/select2/yafowil.widget.select2.min.js',
+            file: 'src/yafowil/widget/select2/resources/widget.min.js',
             format: 'iife',
             plugins: [
                 terser()

@@ -1,119 +1,111 @@
-/*
- * yafowil select2 widget
- *
- * Optional: bdajax
- */
+(function (exports, $) {
+    'use strict';
 
-if (typeof(window.yafowil) == "undefined") yafowil = {};
-
-(function($) {
-
-    $(document).ready(function() {
-        // initial binding
-        yafowil.select2.binder();
-
-        // add after ajax binding if bdajax present
-        if (typeof(window.bdajax) != "undefined") {
-            $.extend(bdajax.binders, {
-                select2_binder: yafowil.select2.binder
+    class Select2Widget {
+        static initialize(context) {
+            $('.select2', context).each(function (event) {
+                let elem = $(this);
+                let options = elem.data();
+                new Select2Widget(elem, options);
             });
         }
-    });
-
-    $.extend(yafowil, {
-
-        select2: {
-
-            extract_value: function(value) {
-                if (typeof value == 'string'
-                 && value.indexOf('javascript:') == 0) {
-                    value = value.substring(11, value.length);
-                    value = value.split('.');
-                    if (!value.length) {
-                        throw "No function defined";
-                    }
-                    var ctx = window;
-                    var name;
-                    for (var idx in value) {
-                        name = value[idx];
-                        if (typeof(ctx[name]) == "undefined") {
-                            throw "'" + name + "' not found";
-                        }
-                        ctx = ctx[name];
-                    }
-                    value = ctx;
-                }
-                return value;
-            },
-
-            update_options: function(options) {
-                var name, value;
-                for (var idx in options) {
-                    name = options[idx];
-                    value = yafowil.select2.extract_value(options[name]);
-                    options[name] = value;
-                }
-                return options;
-            },
-
-            binder: function(context) {
-                $('.select2', context).each(function(event) {
-                    var elem = $(this);
-                    var options = yafowil.select2.update_options(elem.data());
-                    if (options.ajaxurl) {
-                        options.ajax = {
-                            url: options.ajaxurl,
-                            dataType: 'json',
-                            data: function (term, page) {
-                                return {
-                                    q: term, // search term
-                                };
-                            },
-                            results: function (data, page, query) {
-                                if (options.tags && data.length == 0) {
-                                    data.push({
-                                        id: query.term,
-                                        text: query.term
-                                    });
-                                }
-                                return {results: data};
-                            }
-                        };
-                        options.initSelection = function(element, callback) {
-                            var value = element.val();
-                            if (!value) {
-                                return;
-                            }
-                            var vocabulary = element.data('vocabulary');
-                            var label = function(key) {
-                                if (!vocabulary) {
-                                    return key;
-                                }
-                                var term = vocabulary[key];
-                                if (!term) {
-                                    return key;
-                                }
-                                return term
-                            }
-                            if (!options.multiple) {
-                                callback({id: value, text: label(value)});
-                                return;
-                            }
-                            var data = [];
-                            $(element.val().split(",")).each(function() {
-                                data.push({id: this, text: label(this)});
-                            });
-                            callback(data);
-                        }
-                    }
-                    try {
-                        elem.select2(options);
-                    } catch(error) {
-                        console.log('Failed to initialize select2: ' + error);
-                    }
-                });
+        constructor(elem, ops) {
+            this.elem = elem;
+            let options = this.update_options(ops);
+            options = this.init_options(options);
+            try {
+                this.elem.select2(options);
+            } catch (error) {
+                console.log('Failed to initialize select2: ' + error);
             }
+        }
+        init_options(options) {
+            if (options.ajaxurl) {
+                options.ajax = {
+                    url: options.ajaxurl,
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return { q: term };
+                    },
+                    results: function (data, page, query) {
+                        if (options.tags && !data.length) {
+                            data.push({
+                                id: query.term,
+                                text: query.term
+                            });
+                        }
+                        return { results: data };
+                    }
+                };
+                options.initSelection = function (element, callback) {
+                    let value = element.val();
+                    if (!value) { return; }
+                    let vocab = element.data('vocabulary');
+                    function label(key) {
+                        return (!vocab || !vocab[key]) ? key : vocab[key];
+                    }
+                    if (options.multiple) {
+                        let data = [];
+                        $(element.val().split(",")).each(function() {
+                            data.push({ id: this, text: label(this) });
+                        });
+                        callback(data);
+                    } else {
+                        callback({ id: value, text: label(value) });
+                    }
+                };
+            }
+            return options;
+        }
+        extract_value(value) {
+            if (typeof value === 'string' && !value.indexOf('javascript:')) {
+               value = value.substring(11, value.length).split('.');
+               if (!value.length) {
+                   throw "No function defined";
+               }
+               let ctx = window;
+               for (let idx in value) {
+                   let name = value[idx];
+                   if (typeof(ctx[name]) === "undefined") {
+                       throw "'" + name + "' not found";
+                   }
+                   ctx = ctx[name];
+               }
+               value = ctx;
+           }
+           return value;
+        }
+        update_options(options) {
+            for (let idx in options) {
+                let name = options[idx];
+                let value = this.extract_value(options[name]);
+                options[name] = value;
+            }
+            return options;
+        }
+    }
+
+    $(function() {
+        if (window.ts !== undefined) {
+            ts.ajax.register(Select2Widget.initialize, true);
+        } else {
+            Select2Widget.initialize();
         }
     });
 
-})(jQuery);
+    exports.Select2Widget = Select2Widget;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
+
+
+    if (window.yafowil === undefined) {
+        window.yafowil = {};
+    }
+
+    window.yafowil.select2 = exports;
+
+
+    return exports;
+
+})({}, jQuery);
+//# sourceMappingURL=widget.js.map
