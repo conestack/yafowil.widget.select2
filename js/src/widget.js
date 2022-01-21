@@ -12,17 +12,21 @@ export class Select2Widget {
 
     constructor(elem, ops) {
         this.elem = elem;
-        let options = this.update_options(ops);
-        options = this.init_options(options);
+        this.options = this.init_options(ops);
 
         try {
-            this.elem.select2(options);
+            this.elem.select2(this.options);
         } catch (error) {
             console.log('Failed to initialize select2: ' + error);
         }
     }
 
     init_options(options) {
+        for (let idx in options) {
+            let name = options[idx];
+            let value = this.extract_value(options[name]);
+            options[name] = value;
+        }
         if (options.ajaxurl) {
             options.ajax = {
                 url: options.ajaxurl,
@@ -40,7 +44,6 @@ export class Select2Widget {
                     return { results: data };
                 }
             };
-
             options.initSelection = function (element, callback) {
                 let value = element.val();
                 if (!value) { return; }
@@ -81,15 +84,6 @@ export class Select2Widget {
            value = ctx;
        }
        return value;
-    }
-
-    update_options(options) {
-        for (let idx in options) {
-            let name = options[idx];
-            let value = this.extract_value(options[name]);
-            options[name] = value;
-        }
-        return options;
     }
 }
 

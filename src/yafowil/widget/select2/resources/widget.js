@@ -11,8 +11,7 @@
         }
         constructor(elem, ops) {
             this.elem = elem;
-            let options = this.update_options(ops);
-            options = this.init_options(options);
+            let options = this.init_options(ops);
             try {
                 this.elem.select2(options);
             } catch (error) {
@@ -20,6 +19,11 @@
             }
         }
         init_options(options) {
+            for (let idx in options) {
+                let name = options[idx];
+                let value = this.extract_value(options[name]);
+                options[name] = value;
+            }
             if (options.ajaxurl) {
                 options.ajax = {
                     url: options.ajaxurl,
@@ -74,14 +78,6 @@
                value = ctx;
            }
            return value;
-        }
-        update_options(options) {
-            for (let idx in options) {
-                let name = options[idx];
-                let value = this.extract_value(options[name]);
-                options[name] = value;
-            }
-            return options;
         }
     }
 

@@ -47,6 +47,8 @@
 }
 .select2-search input {
     border: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
 }
 .select2-container .select2-choice .select2-arrow {
     border-left: 0;
