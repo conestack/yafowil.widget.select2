@@ -16,8 +16,8 @@
     margin: 4px 0 4px 5px;
 }
 .select2-results .select2-highlighted {
-    background: var(--yafowil-accent-color, rgba(67, 157, 234, 0.3));
-    color: var(--yafowil-accent-font-color, #000);
+    background: var(--yafowil-accent-color, #0d6efd);
+    color: var(--yafowil-accent-font-color, #fff);
 }
 .select2-results {
     padding: 0 0 0 0;
@@ -59,8 +59,8 @@
 .select2-results .select2-selection-limit {
     padding: 3px 6px;
     font-size: 12px;
-    background-color: var(--yafowil-accent-color, rgba(67, 157, 234, 0.3));
-    color: var(--yafowil-accent-font-color, #000);
+    background-color: var(--yafowil-accent-color, #0d6efd);
+    color: var(--yafowil-accent-font-color, #fff);
     border-radius: 0 0 3px 3px;
 }
 .select2-dropdown-open .select2-choice {
