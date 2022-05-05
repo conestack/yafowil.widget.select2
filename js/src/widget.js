@@ -86,4 +86,3 @@ export class Select2Widget {
        return value;
     }
 }
-
