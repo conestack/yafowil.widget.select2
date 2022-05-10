@@ -1,7 +1,9 @@
-name: Test select2
+name: PY Test select2
 
 on:
   push:
+    paths:
+    - '**.py'
 
 jobs:
   test:

@@ -11,6 +11,7 @@ export class Select2Widget {
     }
 
     constructor(elem, ops) {
+        elem.data('select2', this);
         this.elem = elem;
         this.options = this.init_options(ops);
 
