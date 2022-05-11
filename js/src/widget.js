@@ -11,22 +11,20 @@ export class Select2Widget {
     }
 
     constructor(elem, ops) {
-        elem.data('select2', this);
         this.elem = elem;
         this.options = this.init_options(ops);
 
         try {
             this.elem.select2(this.options);
         } catch (error) {
-            console.log('Failed to initialize select2: ' + error);
+            throw `Failed to initialize select2: ${error}`;
         }
+        elem.data('yafowil-select2', this);
     }
 
     init_options(options) {
-        for (let idx in options) {
-            let name = options[idx];
-            let value = this.extract_value(options[name]);
-            options[name] = value;
+        for (let name in options) {
+            options[name] = this.extract_value(options[name]);
         }
         if (options.ajaxurl) {
             options.ajax = {
@@ -70,20 +68,21 @@ export class Select2Widget {
 
     extract_value(value) {
         if (typeof value === 'string' && !value.indexOf('javascript:')) {
-           value = value.substring(11, value.length).split('.');
-           if (!value.length) {
-               throw "No function defined";
-           }
-           let ctx = window;
-           for (let idx in value) {
-               let name = value[idx];
-               if (typeof(ctx[name]) === "undefined") {
-                   throw "'" + name + "' not found";
-               }
-               ctx = ctx[name];
-           }
-           value = ctx;
-       }
-       return value;
+            value = value.substring(11, value.length).split('.');
+            // value.length is always at least 1, because split returns
+            // empty string in array.
+            if (!value[0].length) {
+                throw "No function defined";
+            }
+            let ctx = window;
+            for (let name of value) {
+                if (ctx[name] === undefined) {
+                    throw `${name} not found`;
+                }
+                ctx = ctx[name];
+            }
+            value = ctx;
+        }
+        return value;
     }
 }
