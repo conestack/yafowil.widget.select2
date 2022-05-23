@@ -82,6 +82,8 @@ var yafowil_select2 = (function (exports, $) {
     $(function() {
         if (window.ts !== undefined) {
             ts.ajax.register(Select2Widget.initialize, true);
+        } else if (window.bdajax !== undefined) {
+            bdajax.register(Select2Widget.initialize, true);
         } else {
             Select2Widget.initialize();
         }
@@ -92,10 +94,7 @@ var yafowil_select2 = (function (exports, $) {
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    if (window.yafowil === undefined) {
-        window.yafowil = {};
-    }
-
+    window.yafowil = window.yafowil || {};
     window.yafowil.select2 = exports;
 
 
