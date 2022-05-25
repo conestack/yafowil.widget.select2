@@ -13,7 +13,10 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 
 # webresource ################################################################
 
-scripts = wr.ResourceGroup(name='yafowil-select2-scripts')
+scripts = wr.ResourceGroup(
+    name='yafowil-select2-scripts',
+    path='yafowil.widget.select2'
+)
 scripts.add(wr.ScriptResource(
     name='select2-js',
     depends='jquery-js',
@@ -29,7 +32,10 @@ scripts.add(wr.ScriptResource(
     compressed='widget.min.js'
 ))
 
-styles = wr.ResourceGroup(name='yafowil-select2-styles')
+styles = wr.ResourceGroup(
+    name='yafowil-select2-styles',
+    path='yafowil.widget.select2'
+)
 styles.add(wr.StyleResource(
     name='select2-css',
     directory=os.path.join(resources_dir, 'select2'),
