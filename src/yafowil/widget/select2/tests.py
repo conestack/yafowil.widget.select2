@@ -4,20 +4,25 @@ from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.compat import IS_PY2
 from yafowil.tests import YafowilTestCase
+import os
 import unittest
-import yafowil.loader  # noqa
 
 
 if not IS_PY2:
     from importlib import reload
 
 
+def np(path):
+    return path.replace('/', os.path.sep)
+
+
 class TestSelect2Widget(YafowilTestCase):
 
     def setUp(self):
         super(TestSelect2Widget, self).setUp()
-        from yafowil.widget.select2 import widget
-        reload(widget)
+        from yafowil.widget import select2
+        reload(select2.widget)
+        select2.register()
 
     def test_render_single(self):
         widget = factory(
@@ -308,6 +313,43 @@ class TestSelect2Widget(YafowilTestCase):
             '<input class="select2" id="input-multi" name="multi" type="hidden" value="foo" />'
             '<input class="select2" id="input-multi" name="multi" type="hidden" value="bar" />'
         ))
+
+    def test_resources(self):
+        factory.theme = 'default'
+        resources = factory.get_resources('yafowil.widget.select2')
+        self.assertTrue(resources.directory.endswith(np('/select2/resources')))
+        self.assertEqual(resources.path, 'yafowil-select2')
+
+        scripts = resources.scripts
+        self.assertEqual(len(scripts), 2)
+
+        self.assertTrue(
+            scripts[0].directory.endswith(np('/select2/resources/select2'))
+        )
+        self.assertEqual(scripts[0].path, 'yafowil-select2/select2')
+        self.assertEqual(scripts[0].file_name, 'select2.min.js')
+        self.assertTrue(os.path.exists(scripts[0].file_path))
+
+        self.assertTrue(scripts[1].directory.endswith(np('/select2/resources')))
+        self.assertEqual(scripts[1].path, 'yafowil-select2')
+        self.assertEqual(scripts[1].file_name, 'widget.min.js')
+        self.assertTrue(os.path.exists(scripts[1].file_path))
+
+        styles = resources.styles
+        self.assertEqual(len(styles), 2)
+
+        self.assertTrue(
+            styles[0].directory.endswith(np('/select2/resources/select2'))
+        )
+        self.assertEqual(styles[0].path, 'yafowil-select2/select2')
+        self.assertEqual(styles[0].file_name, 'select2.css')
+        self.assertTrue(os.path.exists(styles[0].file_path))
+
+        self.assertTrue(styles[1].directory.endswith(np('/select2/resources')))
+        self.assertEqual(styles[1].path, 'yafowil-select2')
+        self.assertEqual(styles[1].file_name, 'widget.css')
+        self.assertTrue(os.path.exists(styles[1].file_path))
+
 
 if __name__ == '__main__':
     unittest.main()
