@@ -319,6 +319,7 @@ class TestSelect2Widget(YafowilTestCase):
         factory.theme = 'default'
         resources = factory.get_resources('yafowil.widget.select2')
         self.assertTrue(resources.directory.endswith(np('/select2/resources')))
+        self.assertEqual(resources.name, 'yafowil.widget.select2')
         self.assertEqual(resources.path, 'yafowil-select2')
 
         scripts = resources.scripts
