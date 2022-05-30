@@ -21,7 +21,8 @@ class TestSelect2Widget(YafowilTestCase):
     def setUp(self):
         super(TestSelect2Widget, self).setUp()
         from yafowil.widget import select2
-        reload(select2.widget)
+        from yafowil.widget.select2 import widget
+        reload(widget)
         select2.register()
 
     def test_render_single(self):
