@@ -86,3 +86,35 @@ export class Select2Widget {
         return value;
     }
 }
+
+
+//////////////////////////////////////////////////////////////////////////////
+// yafowil.widget.array integration
+//////////////////////////////////////////////////////////////////////////////
+
+function select2_on_array_add(inst, context) {
+    Select2Widget.initialize(context);
+}
+
+function select2_on_array_index(inst, row, index) {
+    $('.select2', row).each(function() {
+        let trigger = $(this),
+            ref_name = trigger.data('reference-name'),
+            base_id = inst.base_id(row),
+            base_name = base_id.replace(/\-/g, '.');
+        trigger.data('reference-name', inst.set_value_index(
+            ref_name,
+            base_name,
+            index,
+            '.'
+        ));
+    });
+}
+
+$(function() {
+    if (yafowil_array === undefined) {
+        return;
+    }
+    yafowil_array.on_array_event('on_add', select2_on_array_add);
+    yafowil_array.on_array_event('on_index', select2_on_array_index);
+});
