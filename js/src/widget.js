@@ -4,6 +4,10 @@ import $ from 'jquery';
 export class Select2Widget {
     static initialize(context) {
         $('.select2', context).each(function (event) {
+            let id = $(this).parent().attr('id')
+            if (id && id.includes('TEMPLATE')) {
+                return;
+            }
             let elem = $(this);
             let options = elem.data();
             new Select2Widget(elem, options);
@@ -116,5 +120,5 @@ $(function() {
         return;
     }
     yafowil_array.on_array_event('on_add', select2_on_array_add);
-    yafowil_array.on_array_event('on_index', select2_on_array_index);
+    //yafowil_array.on_array_event('on_index', select2_on_array_index);
 });

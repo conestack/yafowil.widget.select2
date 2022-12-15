@@ -1,5 +1,7 @@
 import { Select2Widget } from "../src/widget";
 
+window.yafowil_array =  undefined
+
 QUnit.module('select2', hooks => {
     let wid;
     let el = $('<input class="select2" value=""/>');
