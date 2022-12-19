@@ -32,6 +32,17 @@ QUnit.module('select2', hooks => {
         assert.verifySteps(['select2 called']);
     });
 
+    QUnit.test('initialize in array', assert => {
+        let container = $('<div id="yafowil-TEMPLATE-array" />');
+        container.appendTo('body');
+        el.detach().appendTo(container);
+        Select2Widget.initialize();
+        assert.notOk(el.data('yafowil-select2'));
+
+        // cleanup
+        container.remove();
+    });
+
     QUnit.test('fail initialize', assert => {
         // fails because of faulty elem
         assert.throws(function() {
