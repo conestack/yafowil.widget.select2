@@ -4,11 +4,10 @@ import $ from 'jquery';
 export class Select2Widget {
     static initialize(context) {
         $('.select2', context).each(function (event) {
-            let id = $(this).parent().attr('id')
-            if (id && id.includes('TEMPLATE')) {
+            let elem = $(this);
+            if (elem.parents('.arraytemplate').length) {
                 return;
             }
-            let elem = $(this);
             let options = elem.data();
             new Select2Widget(elem, options);
         });
@@ -100,9 +99,9 @@ function select2_on_array_add(inst, context) {
     Select2Widget.initialize(context);
 }
 
-$(function() {
-    if (yafowil_array === undefined) {
+export function register_array_subscribers() {
+    if (window.yafowil_array === undefined) {
         return;
     }
-    yafowil_array.on_array_event('on_add', select2_on_array_add);
-});
+    window.yafowil_array.on_array_event('on_add', select2_on_array_add);
+}

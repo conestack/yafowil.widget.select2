@@ -1,11 +1,13 @@
-import { Select2Widget } from "../src/widget";
-
-window.yafowil_array =  undefined
+import {Select2Widget} from "../src/widget";
+import {register_array_subscribers} from "../src/widget";
 
 QUnit.module('select2', hooks => {
     let wid;
     let el = $('<input class="select2" value=""/>');
     let vocab = ['One', 'Two', 'Four'];
+    let _array_subscribers = {
+        on_add: []
+    };
 
     hooks.beforeEach(()=> {
         el.appendTo('body');
@@ -32,15 +34,52 @@ QUnit.module('select2', hooks => {
         assert.verifySteps(['select2 called']);
     });
 
-    QUnit.test('initialize in array', assert => {
-        let container = $('<div id="yafowil-TEMPLATE-array" />');
-        container.appendTo('body');
-        el.detach().appendTo(container);
-        Select2Widget.initialize();
-        assert.notOk(el.data('yafowil-select2'));
+    QUnit.test('register_array_subscribers', assert => {
+        $.fn.extend({
+            select2: function () {
+                assert.step('select2 called');
+                return this;
+            }
+        });
 
-        // cleanup
-        container.remove();
+        // return if window.yafowil === undefined
+        register_array_subscribers();
+        assert.deepEqual(_array_subscribers['on_add'], []);
+
+        // patch yafowil_array
+        window.yafowil_array = {
+            on_array_event: function(evt_name, evt_function) {
+                _array_subscribers[evt_name] = evt_function;
+            }
+        };
+        register_array_subscribers();
+
+        // create table DOM
+        let table = $('<table />')
+            .append($('<tr />'))
+            .append($('<td />'))
+            .appendTo('body');
+
+        $('td', table).addClass('arraytemplate');
+        el.detach().appendTo($('td', table));
+
+        // invoke array on_add - returns
+        _array_subscribers['on_add'].apply(null, $('tr', table));
+        wid = el.data('yafowil-select2');
+        assert.notOk(wid);
+        $('td', table).removeClass('arraytemplate');
+        assert.verifySteps([]);
+
+        // invoke array on_add
+        $('td', table).removeClass('arraytemplate');
+        _array_subscribers['on_add'].apply(null, $('tr', table));
+        wid = el.data('yafowil-select2');
+        assert.ok(wid);
+        assert.verifySteps(['select2 called']);
+
+        table.remove();
+        window.yafowil_array = undefined;
+        _array_subscribers = undefined;
     });
 
     QUnit.test('fail initialize', assert => {
