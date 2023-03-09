@@ -4,6 +4,10 @@ Changes
 2.0 (unreleased)
 ----------------
 
+- Extend JS by ``select2_on_array_add``, ``register_array_subscribers``
+  to enable usage in ``yafowil.widget.array``.
+  [lenadax]
+
 - Rewrite JavaScript using ES6.
   [lenadax]
 

@@ -5,6 +5,10 @@ export class Select2Widget {
     static initialize(context) {
         $('.select2', context).each(function (event) {
             let elem = $(this);
+            if (window.yafowil_array !== undefined &&
+                window.yafowil_array.inside_template(elem)) {
+                return;
+            }
             let options = elem.data();
             new Select2Widget(elem, options);
         });
@@ -85,4 +89,20 @@ export class Select2Widget {
         }
         return value;
     }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+// yafowil.widget.array integration
+//////////////////////////////////////////////////////////////////////////////
+
+function select2_on_array_add(inst, context) {
+    Select2Widget.initialize(context);
+}
+
+export function register_array_subscribers() {
+    if (window.yafowil_array === undefined) {
+        return;
+    }
+    window.yafowil_array.on_array_event('on_add', select2_on_array_add);
 }
