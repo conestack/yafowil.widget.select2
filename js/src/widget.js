@@ -5,7 +5,8 @@ export class Select2Widget {
     static initialize(context) {
         $('.select2', context).each(function (event) {
             let elem = $(this);
-            if (elem.parents('.arraytemplate').length) {
+            if (window.yafowil_array !== undefined &&
+                window.yafowil_array.inside_template(elem)) {
                 return;
             }
             let options = elem.data();
