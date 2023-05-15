@@ -1,8 +1,11 @@
 Changes
 =======
 
-2.0 (unreleased)
-----------------
+2.0a1 (unreleased)
+------------------
+
+- Add ``webresource`` support.
+  [rnix]
 
 - Extend JS by ``select2_on_array_add``, ``register_array_subscribers``
   to enable usage in ``yafowil.widget.array``.
