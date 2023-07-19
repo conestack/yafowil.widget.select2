@@ -1,10 +1,24 @@
 Changes
 =======
 
-1.5 (unreleased)
-----------------
+2.0a2 (unreleased)
+------------------
 
 - No changes yet.
+
+
+2.0a1 (2023-05-15)
+------------------
+
+- Add ``webresource`` support.
+  [rnix]
+
+- Extend JS by ``select2_on_array_add``, ``register_array_subscribers``
+  to enable usage in ``yafowil.widget.array``.
+  [lenadax]
+
+- Rewrite JavaScript using ES6.
+  [lenadax]
 
 
 1.4 (2018-07-16)

@@ -1,119 +1,118 @@
-/*
- * yafowil select2 widget
- *
- * Optional: bdajax
- */
+var yafowil_select2 = (function (exports, $) {
+    'use strict';
 
-if (typeof(window.yafowil) == "undefined") yafowil = {};
-
-(function($) {
-
-    $(document).ready(function() {
-        // initial binding
-        yafowil.select2.binder();
-
-        // add after ajax binding if bdajax present
-        if (typeof(window.bdajax) != "undefined") {
-            $.extend(bdajax.binders, {
-                select2_binder: yafowil.select2.binder
+    class Select2Widget {
+        static initialize(context) {
+            $('.select2', context).each(function (event) {
+                let elem = $(this);
+                if (window.yafowil_array !== undefined &&
+                    window.yafowil_array.inside_template(elem)) {
+                    return;
+                }
+                let options = elem.data();
+                new Select2Widget(elem, options);
             });
         }
-    });
-
-    $.extend(yafowil, {
-
-        select2: {
-
-            extract_value: function(value) {
-                if (typeof value == 'string'
-                 && value.indexOf('javascript:') == 0) {
-                    value = value.substring(11, value.length);
-                    value = value.split('.');
-                    if (!value.length) {
-                        throw "No function defined";
-                    }
-                    var ctx = window;
-                    var name;
-                    for (var idx in value) {
-                        name = value[idx];
-                        if (typeof(ctx[name]) == "undefined") {
-                            throw "'" + name + "' not found";
-                        }
-                        ctx = ctx[name];
-                    }
-                    value = ctx;
-                }
-                return value;
-            },
-
-            update_options: function(options) {
-                var name, value;
-                for (var idx in options) {
-                    name = options[idx];
-                    value = yafowil.select2.extract_value(options[name]);
-                    options[name] = value;
-                }
-                return options;
-            },
-
-            binder: function(context) {
-                $('.select2', context).each(function(event) {
-                    var elem = $(this);
-                    var options = yafowil.select2.update_options(elem.data());
-                    if (options.ajaxurl) {
-                        options.ajax = {
-                            url: options.ajaxurl,
-                            dataType: 'json',
-                            data: function (term, page) {
-                                return {
-                                    q: term, // search term
-                                };
-                            },
-                            results: function (data, page, query) {
-                                if (options.tags && data.length == 0) {
-                                    data.push({
-                                        id: query.term,
-                                        text: query.term
-                                    });
-                                }
-                                return {results: data};
-                            }
-                        };
-                        options.initSelection = function(element, callback) {
-                            var value = element.val();
-                            if (!value) {
-                                return;
-                            }
-                            var vocabulary = element.data('vocabulary');
-                            var label = function(key) {
-                                if (!vocabulary) {
-                                    return key;
-                                }
-                                var term = vocabulary[key];
-                                if (!term) {
-                                    return key;
-                                }
-                                return term
-                            }
-                            if (!options.multiple) {
-                                callback({id: value, text: label(value)});
-                                return;
-                            }
-                            var data = [];
-                            $(element.val().split(",")).each(function() {
-                                data.push({id: this, text: label(this)});
-                            });
-                            callback(data);
-                        }
-                    }
-                    try {
-                        elem.select2(options);
-                    } catch(error) {
-                        console.log('Failed to initialize select2: ' + error);
-                    }
-                });
+        constructor(elem, ops) {
+            this.elem = elem;
+            this.options = this.init_options(ops);
+            try {
+                this.elem.select2(this.options);
+            } catch (error) {
+                throw `Failed to initialize select2: ${error}`;
             }
+            elem.data('yafowil-select2', this);
         }
+        init_options(options) {
+            for (let name in options) {
+                options[name] = this.extract_value(options[name]);
+            }
+            if (options.ajaxurl) {
+                options.ajax = {
+                    url: options.ajaxurl,
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return { q: term };
+                    },
+                    results: function (data, page, query) {
+                        if (options.tags && !data.length) {
+                            data.push({
+                                id: query.term,
+                                text: query.term
+                            });
+                        }
+                        return { results: data };
+                    }
+                };
+                options.initSelection = function (element, callback) {
+                    let value = element.val();
+                    if (!value) { return; }
+                    let vocab = element.data('vocabulary');
+                    function label(key) {
+                        return (!vocab || !vocab[key]) ? key : vocab[key];
+                    }
+                    if (options.multiple) {
+                        let data = [];
+                        $(element.val().split(",")).each(function() {
+                            data.push({ id: this, text: label(this) });
+                        });
+                        callback(data);
+                    } else {
+                        callback({ id: value, text: label(value) });
+                    }
+                };
+            }
+            return options;
+        }
+        extract_value(value) {
+            if (typeof value === 'string' && !value.indexOf('javascript:')) {
+                value = value.substring(11, value.length).split('.');
+                if (!value[0].length) {
+                    throw "No function defined";
+                }
+                let ctx = window;
+                for (let name of value) {
+                    if (ctx[name] === undefined) {
+                        throw `${name} not found`;
+                    }
+                    ctx = ctx[name];
+                }
+                value = ctx;
+            }
+            return value;
+        }
+    }
+    function select2_on_array_add(inst, context) {
+        Select2Widget.initialize(context);
+    }
+    function register_array_subscribers() {
+        if (window.yafowil_array === undefined) {
+            return;
+        }
+        window.yafowil_array.on_array_event('on_add', select2_on_array_add);
+    }
+
+    $(function() {
+        if (window.ts !== undefined) {
+            ts.ajax.register(Select2Widget.initialize, true);
+        } else if (window.bdajax !== undefined) {
+            bdajax.register(Select2Widget.initialize, true);
+        } else {
+            Select2Widget.initialize();
+        }
+        register_array_subscribers();
     });
 
-})(jQuery);
+    exports.Select2Widget = Select2Widget;
+    exports.register_array_subscribers = register_array_subscribers;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
+
+
+    window.yafowil = window.yafowil || {};
+    window.yafowil.select2 = exports;
+
+
+    return exports;
+
+})({}, jQuery);
