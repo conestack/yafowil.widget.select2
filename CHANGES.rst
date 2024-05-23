@@ -4,7 +4,8 @@ Changes
 2.0a2 (unreleased)
 ------------------
 
-- No changes yet.
+- Fix deprecated imports.
+  [rnix]
 
 
 2.0a1 (2023-05-15)
