@@ -1,6 +1,57 @@
 var yafowil_select2 = (function (exports, $) {
     'use strict';
 
+    $.fn.select2.amd.define('select2/data/singleValueAjaxAdapter',[
+            'select2/data/ajax',
+            'select2/utils'
+        ],
+        function (AjaxAdapter, Utils) {
+            function SingleValueAjaxAdapter ($element, options) {
+                SingleValueAjaxAdapter.__super__.constructor.call(this, $element, options);
+            }
+            Utils.Extend(SingleValueAjaxAdapter, AjaxAdapter);
+            SingleValueAjaxAdapter.prototype.current = function (callback) {
+                let value = this.$element.val();
+                let vocab = this.$element.data('vocabulary');
+                function label(key) {
+                    return (!vocab || !vocab[key]) ? key : vocab[key];
+                }
+                callback([{ id: value, text: label(value) }]);
+            };
+            SingleValueAjaxAdapter.prototype.select = function(data) {
+                this.$element.find('option[value="' + data.id + '"]').prop('selected', true);
+                AjaxAdapter.prototype.select.call(this, data);
+            };
+        return SingleValueAjaxAdapter;
+    });
+    $.fn.select2.amd.define('select2/data/multiValueAjaxAdapter',[
+        'select2/data/ajax',
+        'select2/utils'
+    ],
+    function (AjaxAdapter, Utils) {
+        function MultiValueAjaxAdapter ($element, options) {
+            MultiValueAjaxAdapter.__super__.constructor.call(this, $element, options);
+        }
+        Utils.Extend(MultiValueAjaxAdapter, AjaxAdapter);
+        MultiValueAjaxAdapter.prototype.current = function (callback) {
+            let value = this.$element.val();
+            let vocab = this.$element.data('vocabulary');
+            function label(key) {
+                return (!vocab || !vocab[key]) ? key : vocab[key];
+            }
+            let data = [];
+            value.split(',').forEach((v) => {
+                data.push({ id: v, text: label(v) });
+            });
+            callback(data);
+        };
+        MultiValueAjaxAdapter.prototype.select = function(data) {
+            AjaxAdapter.prototype.select.call(this, data);
+        };
+        return MultiValueAjaxAdapter;
+    });
+    const singleValueAjaxAdapter=$.fn.select2.amd.require('select2/data/singleValueAjaxAdapter');
+    const multiValueAjaxAdapter=$.fn.select2.amd.require('select2/data/multiValueAjaxAdapter');
     class Select2Widget {
         static initialize(context) {
             $('.select2', context).each(function (event) {
@@ -22,9 +73,6 @@ var yafowil_select2 = (function (exports, $) {
                 throw `Failed to initialize select2: ${error}`;
             }
             elem.data('yafowil-select2', this);
-            if (this.elem.val()) {
-                this.elem.trigger('change');
-            }
         }
         init_options(options) {
             for (let name in options) {
@@ -37,46 +85,22 @@ var yafowil_select2 = (function (exports, $) {
                     data: function (params) {
                         return { q: params.term };
                     },
-                    processResults: function (data) {
+                    processResults: function (data, params) {
                         if (options.tags && !data.length) {
                             data.push({
                                 id: params.term,
                                 text: params.term
                             });
                         }
-                        return { results: data };
+                        let results = data.map(item => ({ id: item.id, text: item.text || item.id }));
+                        return { results: results };
                     }
                 };
-                $.fn.select2.amd.require(["select2/data/select"], function(Select) {
-                    let CustomDataAdapter = Select;
-                    CustomDataAdapter.prototype.current = function (callback) {
-                        console.log('current');
-                        let value = this.$element.val();
-                        console.log(value);
-                        let vocab = this.$element.data('vocabulary');
-                        function label(key) {
-                            return (!vocab || !vocab[key]) ? key : vocab[key];
-                        }
-                        if (options.multiple) {
-                            console.log('multi');
-                            let data = [];
-                            $(this.$element.val().split(",")).each(function() {
-                                data.push({ id: this, text: label(this) });
-                            });
-                            callback(data);
-                        } else {
-                            console.log('single');
-                            callback([{ id: 'foo', text: value }]);
-                        }
-                    };
-                    let originalSelect = CustomDataAdapter.prototype.select;
-                    CustomDataAdapter.prototype.select = function (data) {
-                        console.log(data);
-                        console.log('ARHGHHGGH');
-                        originalSelect.bind(this)(data);
-                    };
-                    options.dataAdapter = CustomDataAdapter;
-                });
+                if (options.multiple) {
+                    options.dataAdapter = multiValueAjaxAdapter;
+                } else {
+                    options.dataAdapter = singleValueAjaxAdapter;
+                }
             }
             options.theme = 'bootstrap-5';
             options.selectionCssClass = "select2--medium";
