@@ -102,6 +102,11 @@ bootstrap5_resources.add(wr.StyleResource(
     path='yafowil-select2/select2-bootstrap5-theme',
     resource='select2-bootstrap-5-theme.css'
 ))
+bootstrap5_resources.add(wr.StyleResource(
+    name='yafowil-select2-css',
+    depends='select2-css',
+    resource='bootstrap5/widget.css'
+))
 
 # B/C resources ##############################################################
 
