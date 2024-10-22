@@ -34,8 +34,6 @@ def json_data(term):
                     'id': val,
                     'text': val,
                 })
-    print(term)
-    print(data)
     return data
 
 
@@ -82,10 +80,11 @@ Select2 widget in tag mode.
 
 .. code-block:: python
 
-    value = [u'Sämling', u'Scheurebe']
+    vocabulary = [('a', u'Sämling'), ('b', u'Scheurebe')]
+    value = ['a', 'b']
     select2 = factory('#field:select2', value=value, props={
         'label': 'Select or add some items',
-        'inputtag': True,
+        'vocabulary': vocabulary,
         'placeholder': 'Select or add some items',
         'minimumInputLength': 1,
         'multiple': True,
@@ -203,10 +202,11 @@ def get_example():
 
     # input mode
     select2_3 = factory(u'fieldset', name='yafowil_select2_3')
-    select2_3_val = [u'Sämling', u'Scheurebe']
+    select2_3_val = ['a', 'b']
+    select2_3_vocab = [('a', u'Sämling'), ('b', u'Scheurebe')]
     select2_3['text'] = factory('#field:select2', value=select2_3_val, props={
         'label': 'Select or add some items',
-        'inputtag': True,
+        'vocabulary': select2_3_vocab,
         'placeholder': 'Select or add some items',
         'minimumInputLength': 1,
         'multiple': True,
