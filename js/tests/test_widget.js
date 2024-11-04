@@ -1,5 +1,6 @@
 import {Select2Widget} from "../src/widget";
 import {register_array_subscribers} from "../src/widget";
+import $ from 'jquery';
 
 QUnit.module('select2', hooks => {
     let wid;
