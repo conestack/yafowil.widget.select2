@@ -30,8 +30,8 @@ resources.add(wr.ScriptResource(
 resources.add(wr.ScriptResource(
     name='yafowil-select2-js',
     depends='select2-js',
-    resource='widget.js',
-    compressed='widget.min.js'
+    resource='default/widget.js',
+    compressed='default/widget.min.js'
 ))
 resources.add(wr.StyleResource(
     name='select2-css',
@@ -42,7 +42,7 @@ resources.add(wr.StyleResource(
 resources.add(wr.StyleResource(
     name='yafowil-select2-css',
     depends='select2-css',
-    resource='widget.css'
+    resource='default/widget.css'
 ))
 
 # B/C resources ##############################################################
@@ -53,7 +53,7 @@ js = [{
     'order': 20,
 }, {
     'group': 'yafowil.widget.select2.common',
-    'resource': 'widget.js',
+    'resource': 'default/widget.js',
     'order': 21,
 }]
 css = [{
@@ -62,7 +62,7 @@ css = [{
     'order': 20,
 }, {
     'group': 'yafowil.widget.select2.common',
-    'resource': 'widget.css',
+    'resource': 'default/widget.css',
     'order': 21,
 }]
 

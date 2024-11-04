@@ -1,8 +1,8 @@
 import cleanup from 'rollup-plugin-cleanup';
-import {terser} from 'rollup-plugin-terser';
+import postcss from 'rollup-plugin-postcss';
+import terser from '@rollup/plugin-terser';
 
 const out_dir = 'src/yafowil/widget/select2/resources';
-const out_dir_bs5 = 'src/yafowil/widget/select2/resources/bootstrap5';
 
 const outro = `
 window.yafowil = window.yafowil || {};
@@ -10,14 +10,19 @@ window.yafowil.select2 = exports;
 `;
 
 export default args => {
-    let conf = {
-        input: 'js/src/bundle.js',
+
+    ////////////////////////////////////////////////////////////////////////////
+    // DEFAULT
+    ////////////////////////////////////////////////////////////////////////////
+
+    let bundle_default = {
+        input: 'js/src/default/bundle.js',
         plugins: [
             cleanup()
         ],
         output: [{
             name: 'yafowil_select2',
-            file: `${out_dir}/widget.js`,
+            file: `${out_dir}/default/widget.js`,
             format: 'iife',
             outro: outro,
             globals: {
@@ -30,9 +35,9 @@ export default args => {
         ]
     };
     if (args.configDebug !== true) {
-        conf.output.push({
+        bundle_default.output.push({
             name: 'yafowil_select2',
-            file: `${out_dir}/widget.min.js`,
+            file: `${out_dir}/default/widget.min.js`,
             format: 'iife',
             plugins: [
                 terser()
@@ -44,16 +49,36 @@ export default args => {
             interop: 'default'
         });
     }
+    let scss_default = {
+        input: ['scss/default/styles.scss'],
+        output: [{
+            file: `${out_dir}/default/widget.css`,
+            format: 'es',
+            plugins: [terser()],
+        }],
+        plugins: [
+            postcss({
+                extract: true,
+                minimize: true,
+                use: [
+                    ['sass', { outputStyle: 'compressed' }],
+                ],
+            }),
+        ],
+    };
 
-    // Bootstrap 5
-    let conf2 = {
+    ////////////////////////////////////////////////////////////////////////////
+    // BOOTSTRAP5
+    ////////////////////////////////////////////////////////////////////////////
+
+    let bundle_bs5 = {
         input: 'js/src/bootstrap5/bundle.js',
         plugins: [
             cleanup()
         ],
         output: [{
             name: 'yafowil_select2',
-            file: `${out_dir_bs5}/widget.js`,
+            file: `${out_dir}/bootstrap5/widget.js`,
             format: 'iife',
             outro: outro,
             globals: {
@@ -66,9 +91,9 @@ export default args => {
         ]
     };
     if (args.configDebug !== true) {
-        conf2.output.push({
+        bundle_bs5.output.push({
             name: 'yafowil_select2',
-            file: `${out_dir_bs5}/widget.min.js`,
+            file: `${out_dir}/bootstrap5/widget.min.js`,
             format: 'iife',
             plugins: [
                 terser()
@@ -80,6 +105,23 @@ export default args => {
             interop: 'default'
         });
     }
+    let scss_bs5 = {
+        input: ['scss/bootstrap5/styles.scss'],
+        output: [{
+            file: `${out_dir}/bootstrap5/widget.css`,
+            format: 'es',
+            plugins: [terser()],
+        }],
+        plugins: [
+            postcss({
+                extract: true,
+                minimize: true,
+                use: [
+                    ['sass', { outputStyle: 'compressed' }],
+                ],
+            }),
+        ],
+    };
 
-    return [conf, conf2];
+    return [bundle_default, scss_default, bundle_bs5, scss_bs5];
 };
