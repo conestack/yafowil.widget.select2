@@ -1,4 +1,3 @@
-import resource
 from yafowil.base import factory
 from yafowil.utils import entry_point
 import os
