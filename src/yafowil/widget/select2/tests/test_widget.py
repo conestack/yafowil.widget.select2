@@ -332,9 +332,9 @@ class TestSelect2Widget(YafowilTestCase):
         self.assertEqual(scripts[0].file_name, 'select2.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
-        self.assertTrue(scripts[1].directory.endswith(np('/select2/resources')))
+        self.assertTrue(scripts[1].directory.endswith(np('/select2/resources/default')))
         self.assertEqual(scripts[1].path, 'yafowil-select2')
-        self.assertEqual(scripts[1].file_name, 'default/widget.min.js')
+        self.assertEqual(scripts[1].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[1].file_path))
 
         styles = resources.styles
@@ -347,9 +347,9 @@ class TestSelect2Widget(YafowilTestCase):
         self.assertEqual(styles[0].file_name, 'select2.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
 
-        self.assertTrue(styles[1].directory.endswith(np('/select2/resources')))
+        self.assertTrue(styles[1].directory.endswith(np('/select2/resources/default')))
         self.assertEqual(styles[1].path, 'yafowil-select2')
-        self.assertEqual(styles[1].file_name, 'default/widget.css')
+        self.assertEqual(styles[1].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[1].file_path))
 
 
