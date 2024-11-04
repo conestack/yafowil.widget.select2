@@ -30,6 +30,7 @@ resources.add(wr.ScriptResource(
 resources.add(wr.ScriptResource(
     name='yafowil-select2-js',
     directory=os.path.join(resources_dir, 'default'),
+    path='yafowil-select2/default',
     depends='select2-js',
     resource='widget.js',
     compressed='widget.min.js'
@@ -43,6 +44,7 @@ resources.add(wr.StyleResource(
 resources.add(wr.StyleResource(
     name='yafowil-select2-css',
     directory=os.path.join(resources_dir, 'default'),
+    path='yafowil-select2/default',
     depends='select2-css',
     resource='widget.min.css'
 ))
@@ -90,6 +92,7 @@ bootstrap5_resources.add(wr.ScriptResource(
 bootstrap5_resources.add(wr.ScriptResource(
     name='yafowil-select2-js',
     directory=os.path.join(resources_dir, 'bootstrap5'),
+    path='yafowil-select2/bootstrap5',
     depends='select2-js',
     resource='widget.js'
 ))
@@ -108,6 +111,7 @@ bootstrap5_resources.add(wr.StyleResource(
 bootstrap5_resources.add(wr.StyleResource(
     name='yafowil-select2-css',
     directory=os.path.join(resources_dir, 'bootstrap5'),
+    path='yafowil-select2/bootstrap5',
     depends='select2-css',
     resource='widget.min.css'
 ))
