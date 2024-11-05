@@ -1,4 +1,3 @@
-
 import $ from 'jquery';
 
 // define custom adapters
@@ -23,11 +22,11 @@ $.fn.select2.amd.define('select2/data/singleValueAjaxAdapter',[
 
         SingleValueAjaxAdapter.prototype.select = function(data) {
             this.$element.find('option[value="' + data.id + '"]').prop('selected', true);
-            AjaxAdapter.prototype.select.call(this, data)
+            AjaxAdapter.prototype.select.call(this, data);
         };
 
-    return SingleValueAjaxAdapter;
-});
+        return SingleValueAjaxAdapter;
+    });
 
 $.fn.select2.amd.define('select2/data/multiValueAjaxAdapter',[
     'select2/data/ajax',
@@ -58,11 +57,15 @@ function (AjaxAdapter, Utils) {
 
     return MultiValueAjaxAdapter;
 });
-const singleValueAjaxAdapter=$.fn.select2.amd.require('select2/data/singleValueAjaxAdapter');
-const multiValueAjaxAdapter=$.fn.select2.amd.require('select2/data/multiValueAjaxAdapter');
+
+const singleValueAjaxAdapter = $.fn.select2.amd.require('select2/data/singleValueAjaxAdapter');
+const multiValueAjaxAdapter = $.fn.select2.amd.require('select2/data/multiValueAjaxAdapter');
 
 export class Select2Widget {
 
+    /**
+     * @param {jQuery} context - DOM context for initialization.
+     */
     static initialize(context) {
         $('.select2', context).each(function (event) {
             let elem = $(this);
@@ -75,6 +78,10 @@ export class Select2Widget {
         });
     }
 
+    /**
+     * @param {jQuery} elem - The widget input element.
+     * @param {Object} ops - Configuration options.
+     */
     constructor(elem, ops) {
         this.elem = elem;
         this.options = this.init_options(ops);
@@ -87,6 +94,10 @@ export class Select2Widget {
         elem.data('yafowil-select2', this);
     }
 
+    /**
+     * @param {Object} options - The original options.
+     * @returns {Object} - The initialized options.
+     */
     init_options(options) {
         for (let name in options) {
             options[name] = this.extract_value(options[name]);
@@ -124,6 +135,11 @@ export class Select2Widget {
         return options;
     }
 
+    /**
+     * Extracts and resolves values from the options.
+     * @param {string|Function} value - The value to extract.
+     * @returns {Function} - The resolved value.
+     */
     extract_value(value) {
         if (typeof value === 'string' && !value.indexOf('javascript:')) {
             value = value.substring(11, value.length).split('.');
@@ -150,10 +166,16 @@ export class Select2Widget {
 // yafowil.widget.array integration
 //////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Re-initializes widget on array add event.
+ */
 function select2_on_array_add(inst, context) {
     Select2Widget.initialize(context);
 }
 
+/**
+ * Registers subscribers to yafowil array events.
+ */
 export function register_array_subscribers() {
     if (window.yafowil_array === undefined) {
         return;
