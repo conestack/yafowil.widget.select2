@@ -64,6 +64,8 @@ const multiValueAjaxAdapter = $.fn.select2.amd.require('select2/data/multiValueA
 export class Select2Widget {
 
     /**
+     * Initializes each widget in the given DOM context.
+     * 
      * @param {jQuery} context - DOM context for initialization.
      */
     static initialize(context) {
