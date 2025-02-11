@@ -85,7 +85,7 @@ bootstrap5_resources.add(wr.ScriptResource(
     name='select2-js',
     depends='jquery-js',
     directory=os.path.join(resources_dir, 'select2', 'js'),
-    path='yafowil-select2/select2',
+    path='yafowil-select2/select2/js',
     resource='select2.js',
     compressed='select2.min.js'
 ))
@@ -100,7 +100,7 @@ bootstrap5_resources.add(wr.ScriptResource(
 bootstrap5_resources.add(wr.StyleResource(
     name='select2-css',
     directory=os.path.join(resources_dir, 'select2', 'css'),
-    path='yafowil-select2/select2',
+    path='yafowil-select2/select2/css',
     resource='select2.css',
     compressed='select2.min.css'
 ))
