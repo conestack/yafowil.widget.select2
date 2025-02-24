@@ -21,8 +21,8 @@ resources = wr.ResourceGroup(
 resources.add(wr.ScriptResource(
     name='select2-js',
     depends='jquery-js',
-    directory=os.path.join(resources_dir, 'select2'),
-    path='yafowil-select2/select2',
+    directory=os.path.join(resources_dir, 'select2', 'js'),
+    path='yafowil-select2/select2/js',
     resource='select2.js',
     compressed='select2.min.js'
 ))
@@ -36,9 +36,10 @@ resources.add(wr.ScriptResource(
 ))
 resources.add(wr.StyleResource(
     name='select2-css',
-    directory=os.path.join(resources_dir, 'select2'),
-    path='yafowil-select2/select2',
-    resource='select2.css'
+    directory=os.path.join(resources_dir, 'select2', 'css'),
+    path='yafowil-select2/select2/css',
+    resource='select2.css',
+    compressed='select2.min.css'
 ))
 resources.add(wr.StyleResource(
     name='yafowil-select2-css',
