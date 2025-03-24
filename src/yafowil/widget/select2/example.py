@@ -176,6 +176,50 @@ vocabulary defining terms for values.
 """
 
 
+TITLE_SELECT2_DISPLAY = "Display Mode - single selection"
+DOC_SELECT2_DISPLAY = """
+The widget's display mode renders the widget value inside an uneditable div.
+
+The wrapper div can receive additional classes via the ``display_class``
+widget attribute.
+
+.. code-block:: python
+
+    select2 = factory('#field:select2', value='Traminer', mode='display', props={
+        'label': 'Single Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+        # 'display_class': 'my-additional-class'
+    })
+
+"""
+
+TITLE_SELECT2_DISPLAY_MULTI = "Display Mode - multi selection"
+DOC_SELECT2_DISPLAY_MULTI = """
+The widget's display mode renders the widget values as ``<li>`` tags
+inside an uneditable ``<ul>``.
+
+The wrapper div can receive additional classes via the ``display_class``
+widget attribute.
+
+The ``<li>`` items can receive additional classes via the ``display_item_class``
+widget attribute.
+
+.. code-block:: python
+
+    value = [u'Sauvingnon Blanc', u'Sämling']
+    select2 = factory('#field:select2', value=value, mode='display', props={
+        'label': 'Multi Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+        'multiple': True,
+        'display_class': 'list-group',
+        'display_item_class': 'list-group-item'
+    })
+
+"""
+
+
 def get_example():
 
     vocab = sorted((u'Weißburgunder', u'Welschriesling',
@@ -255,6 +299,26 @@ def get_example():
     })
     select2_6_routes = {'yafowil.widget.select2.json': json_response}
 
+    # single selection - display mode
+    select2_display = factory(u'fieldset', name='yafowil_select2_display')
+    select2_display['text'] = factory('#field:select2', value='Traminer', mode='display', props={
+        'label': 'Single Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+    })
+
+    # multi selection - display mode
+    select2_display2 = factory(u'fieldset', name='yafowil_select2_2')
+    select2_display2_val = [u'Sauvingnon Blanc', u'Sämling']
+    select2_display2['text'] = factory('#field:select2', value=select2_display2_val, mode='display', props={
+        'label': 'Multi Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+        'multiple': True,
+        'display_class': 'list-group',
+        'display_item_class': 'list-group-item text-muted'
+    })
+
     return [
         {
         'widget': select2_1,
@@ -288,5 +352,15 @@ def get_example():
         'routes': select2_6_routes,
         'doc': DOC_SELECT2_6,
         'title': TITLE_SELECT2_6
-    }
+    },
+    {
+        'widget': select2_display,
+        'doc': DOC_SELECT2_DISPLAY,
+        'title': TITLE_SELECT2_DISPLAY
+    },
+    {
+        'widget': select2_display2,
+        'doc': DOC_SELECT2_DISPLAY_MULTI,
+        'title': TITLE_SELECT2_DISPLAY_MULTI
+    },
     ]
