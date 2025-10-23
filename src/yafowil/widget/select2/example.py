@@ -34,8 +34,6 @@ def json_data(term):
                     'id': val,
                     'text': val,
                 })
-    print(term)
-    print(data)
     return data
 
 
@@ -82,10 +80,11 @@ Select2 widget in tag mode.
 
 .. code-block:: python
 
-    value = [u'Sämling', u'Scheurebe']
+    vocabulary = [('a', u'Sämling'), ('b', u'Scheurebe')]
+    value = ['a', 'b']
     select2 = factory('#field:select2', value=value, props={
         'label': 'Select or add some items',
-        'inputtag': True,
+        'vocabulary': vocabulary,
         'placeholder': 'Select or add some items',
         'minimumInputLength': 1,
         'multiple': True,
@@ -177,6 +176,50 @@ vocabulary defining terms for values.
 """
 
 
+TITLE_SELECT2_DISPLAY = "Display Mode - single selection"
+DOC_SELECT2_DISPLAY = """
+The widget's display mode renders the widget value inside an uneditable div.
+
+The wrapper div can receive additional classes via the ``display_class``
+widget attribute.
+
+.. code-block:: python
+
+    select2 = factory('#field:select2', value='Traminer', mode='display', props={
+        'label': 'Single Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+        # 'display_class': 'my-additional-class'
+    })
+
+"""
+
+TITLE_SELECT2_DISPLAY_MULTI = "Display Mode - multi selection"
+DOC_SELECT2_DISPLAY_MULTI = """
+The widget's display mode renders the widget values as ``<li>`` tags
+inside an uneditable ``<ul>``.
+
+The wrapper div can receive additional classes via the ``display_class``
+widget attribute.
+
+The ``<li>`` items can receive additional classes via the ``display_item_class``
+widget attribute.
+
+.. code-block:: python
+
+    value = [u'Sauvingnon Blanc', u'Sämling']
+    select2 = factory('#field:select2', value=value, mode='display', props={
+        'label': 'Multi Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+        'multiple': True,
+        'display_class': 'list-group',
+        'display_item_class': 'list-group-item'
+    })
+
+"""
+
+
 def get_example():
 
     vocab = sorted((u'Weißburgunder', u'Welschriesling',
@@ -203,10 +246,11 @@ def get_example():
 
     # input mode
     select2_3 = factory(u'fieldset', name='yafowil_select2_3')
-    select2_3_val = [u'Sämling', u'Scheurebe']
+    select2_3_val = ['a', 'b']
+    select2_3_vocab = [('a', u'Sämling'), ('b', u'Scheurebe')]
     select2_3['text'] = factory('#field:select2', value=select2_3_val, props={
         'label': 'Select or add some items',
-        'inputtag': True,
+        'vocabulary': select2_3_vocab,
         'placeholder': 'Select or add some items',
         'minimumInputLength': 1,
         'multiple': True,
@@ -255,31 +299,68 @@ def get_example():
     })
     select2_6_routes = {'yafowil.widget.select2.json': json_response}
 
-    return [{
+    # single selection - display mode
+    select2_display = factory(u'fieldset', name='yafowil_select2_display')
+    select2_display['text'] = factory('#field:select2', value='Traminer', mode='display', props={
+        'label': 'Single Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+    })
+
+    # multi selection - display mode
+    select2_display2 = factory(u'fieldset', name='yafowil_select2_2')
+    select2_display2_val = [u'Sauvingnon Blanc', u'Sämling']
+    select2_display2['text'] = factory('#field:select2', value=select2_display2_val, mode='display', props={
+        'label': 'Multi Selection in Display Mode',
+        'placeholder': 'Select some items',
+        'vocabulary': vocab,
+        'multiple': True,
+        'display_class': 'list-group',
+        'display_item_class': 'list-group-item text-muted'
+    })
+
+    return [
+        {
         'widget': select2_1,
         'doc': DOC_SELECT2_1,
         'title': TITLE_SELECT2_1
-    }, {
+    }, 
+    {
         'widget': select2_2,
         'doc': DOC_SELECT2_2,
         'title': TITLE_SELECT2_2
-    }, {
+    }, 
+    {
         'widget': select2_3,
         'doc': DOC_SELECT2_3,
         'title': TITLE_SELECT2_3
-    }, {
+    }, 
+    {
         'widget': select2_4,
         'routes': select2_4_routes,
         'doc': DOC_SELECT2_4,
         'title': TITLE_SELECT2_4
-    }, {
+    }, 
+    {
         'widget': select2_5,
         'routes': select2_5_routes,
         'doc': DOC_SELECT2_5,
         'title': TITLE_SELECT2_5
-    }, {
+    }, 
+    {
         'widget': select2_6,
         'routes': select2_6_routes,
         'doc': DOC_SELECT2_6,
         'title': TITLE_SELECT2_6
-    }]
+    },
+    {
+        'widget': select2_display,
+        'doc': DOC_SELECT2_DISPLAY,
+        'title': TITLE_SELECT2_DISPLAY
+    },
+    {
+        'widget': select2_display2,
+        'doc': DOC_SELECT2_DISPLAY_MULTI,
+        'title': TITLE_SELECT2_DISPLAY_MULTI
+    },
+    ]

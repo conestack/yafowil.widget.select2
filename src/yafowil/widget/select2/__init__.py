@@ -21,27 +21,32 @@ resources = wr.ResourceGroup(
 resources.add(wr.ScriptResource(
     name='select2-js',
     depends='jquery-js',
-    directory=os.path.join(resources_dir, 'select2'),
-    path='yafowil-select2/select2',
+    directory=os.path.join(resources_dir, 'select2', 'js'),
+    path='yafowil-select2/select2/js',
     resource='select2.js',
     compressed='select2.min.js'
 ))
 resources.add(wr.ScriptResource(
     name='yafowil-select2-js',
+    directory=os.path.join(resources_dir, 'default'),
+    path='yafowil-select2/default',
     depends='select2-js',
     resource='widget.js',
     compressed='widget.min.js'
 ))
 resources.add(wr.StyleResource(
     name='select2-css',
-    directory=os.path.join(resources_dir, 'select2'),
-    path='yafowil-select2/select2',
-    resource='select2.css'
+    directory=os.path.join(resources_dir, 'select2', 'css'),
+    path='yafowil-select2/select2/css',
+    resource='select2.css',
+    compressed='select2.min.css'
 ))
 resources.add(wr.StyleResource(
     name='yafowil-select2-css',
+    directory=os.path.join(resources_dir, 'default'),
+    path='yafowil-select2/default',
     depends='select2-css',
-    resource='widget.css'
+    resource='widget.min.css'
 ))
 
 # B/C resources ##############################################################
@@ -52,7 +57,7 @@ js = [{
     'order': 20,
 }, {
     'group': 'yafowil.widget.select2.common',
-    'resource': 'widget.js',
+    'resource': 'default/widget.js',
     'order': 21,
 }]
 css = [{
@@ -61,7 +66,79 @@ css = [{
     'order': 20,
 }, {
     'group': 'yafowil.widget.select2.common',
-    'resource': 'widget.css',
+    'resource': 'default/widget.css',
+    'order': 21,
+}]
+
+
+##############################################################################
+# Bootstrap 5
+##############################################################################
+
+# webresource ################################################################
+
+bootstrap5_resources = wr.ResourceGroup(
+    name='yafowil.widget.select2',
+    directory=resources_dir,
+    path='yafowil-select2'
+)
+bootstrap5_resources.add(wr.ScriptResource(
+    name='select2-js',
+    depends='jquery-js',
+    directory=os.path.join(resources_dir, 'select2', 'js'),
+    path='yafowil-select2/select2/js',
+    resource='select2.js',
+    compressed='select2.min.js'
+))
+bootstrap5_resources.add(wr.ScriptResource(
+    name='yafowil-select2-js',
+    directory=os.path.join(resources_dir, 'bootstrap5'),
+    path='yafowil-select2/bootstrap5',
+    depends='select2-js',
+    resource='widget.js'
+    # compressed='widget.min.js'
+))
+bootstrap5_resources.add(wr.StyleResource(
+    name='select2-css',
+    directory=os.path.join(resources_dir, 'select2', 'css'),
+    path='yafowil-select2/select2/css',
+    resource='select2.css',
+    compressed='select2.min.css'
+))
+bootstrap5_resources.add(wr.StyleResource(
+    name='select2-bs5-css',
+    directory=os.path.join(resources_dir, 'select2-bs5'),
+    path='yafowil-select2/select2-bs5',
+    depends='select2-css',
+    resource='select2-bootstrap-5-theme.css',
+    compressed='select2-bootstrap-5-theme.min.css'
+))
+bootstrap5_resources.add(wr.StyleResource(
+    name='yafowil-select2-css',
+    directory=os.path.join(resources_dir, 'bootstrap5'),
+    path='yafowil-select2/bootstrap5',
+    depends='select2-bs5-css',
+    resource='widget.min.css'
+))
+
+# B/C resources ##############################################################
+
+bootstrap5_js = [{
+    'group': 'yafowil.widget.select2.dependencies',
+    'resource': 'select2/select2.js',
+    'order': 20,
+}, {
+    'group': 'yafowil.widget.select2.common',
+    'resource': 'bootstrap5/widget.js',
+    'order': 21,
+}]
+bootstrap5_css = [{
+    'group': 'yafowil.widget.select2.dependencies',
+    'resource': 'select2/select2.css',
+    'order': 20,
+}, {
+    'group': 'yafowil.widget.select2.common',
+    'resource': 'bootstrap5/widget.min.css',
     'order': 21,
 }]
 
@@ -85,3 +162,18 @@ def register():
         css=css
     )
     factory.register_resources('default', widget_name, resources)
+
+    # Bootstrap 5
+    factory.register_theme(
+        ['bootstrap5'],
+        widget_name,
+        resources_dir,
+        js=bootstrap5_js,
+        css=bootstrap5_css
+    )
+
+    factory.register_resources(
+        ['bootstrap5'],
+        widget_name,
+        bootstrap5_resources
+    )
