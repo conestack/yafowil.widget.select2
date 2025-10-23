@@ -4,7 +4,35 @@ Changes
 2.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update jQuery to version ``4.0.0-beta.2``.
+  [lenadax]
+
+- Implement custom ajax adapters in js.
+  [lenadax]
+
+- Update select2.js from version ``3.5.0`` to version ``4.1.0``.
+  [lenadax]
+
+- Utilize ``select2-bootstrap5-theme`` v1.3.0 (https://github.com/apalfrey/select2-bootstrap-5-theme).
+  [lenadax]
+
+- Remove unused locale files.
+  [lenadax]
+
+- Implement dark theme for ``Bootstrap5`` dark theme mode.
+  [lenadax]
+
+- Use rollup for bundling scss. Use ``make rollup`` to compile js and scss.
+  [lenadax]
+
+- Use ``webtestrunner`` instead of ``karma`` for js tests. Use ``make wtr`` to run tests.
+  [lenadax]
+
+- Use ``pnpm`` as package manager.
+  [lenadax]
+
+- Create Bootstrap5 widget version.
+  [lenadax]
 
 
 2.0a2 (2024-05-23)
