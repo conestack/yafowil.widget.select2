@@ -1,5 +1,9 @@
 
 import $ from 'jquery';
+import {
+    singleValueAjaxAdapter,
+    multiValueAjaxAdapter
+} from '../adapters/adapters.js';
 
 export class Select2Widget {
     static initialize(context) {
@@ -34,39 +38,31 @@ export class Select2Widget {
             options.ajax = {
                 url: options.ajaxurl,
                 dataType: 'json',
-                data: function (term, page) {
-                    return { q: term }; // search term
+                data: function (params) {
+                    return { q: params.term };
                 },
-                results: function (data, page, query) {
+                processResults: function (data, params) {
                     if (options.tags && !data.length) {
                         data.push({
-                            id: query.term,
-                            text: query.term
+                            id: params.term,
+                            text: params.term
                         });
                     }
-                    return { results: data };
+                    let results = data.map(item => ({ id: item.id, text: item.text || item.id }));
+                    return { results: results };
                 }
             };
-            options.initSelection = function (element, callback) {
-                let value = element.val();
-                if (!value) { return; }
-
-                let vocab = element.data('vocabulary');
-                function label(key) {
-                    return (!vocab || !vocab[key]) ? key : vocab[key];
-                }
-
-                if (options.multiple) {
-                    let data = [];
-                    $(element.val().split(",")).each(function() {
-                        data.push({ id: this, text: label(this) });
-                    });
-                    callback(data);
-                } else {
-                    callback({ id: value, text: label(value) });
-                }
+            if (options.multiple) {
+                options.dataAdapter = multiValueAjaxAdapter;
+            } else {
+                options.dataAdapter = singleValueAjaxAdapter;
             }
         }
+
+        options.selectionCssClass = "select2--medium";
+        options.dropdownCssClass = "select2--medium";
+        options.width = '500px';
+
         return options;
     }
 

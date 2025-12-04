@@ -1,6 +1,58 @@
 var yafowil_select2 = (function (exports, $) {
     'use strict';
 
+    $.fn.select2.amd.define('select2/data/singleValueAjaxAdapter',[
+            'select2/data/ajax',
+            'select2/utils'
+        ],
+        function (AjaxAdapter, Utils) {
+            function SingleValueAjaxAdapter ($element, options) {
+                SingleValueAjaxAdapter.__super__.constructor.call(this, $element, options);
+            }
+            Utils.Extend(SingleValueAjaxAdapter, AjaxAdapter);
+            SingleValueAjaxAdapter.prototype.current = function (callback) {
+                let value = this.$element.val();
+                let vocab = this.$element.data('vocabulary');
+                function label(key) {
+                    return (!vocab || !vocab[key]) ? key : vocab[key];
+                }
+                callback([{ id: value, text: label(value) }]);
+            };
+            SingleValueAjaxAdapter.prototype.select = function(data) {
+                this.$element.find('option[value="' + data.id + '"]').prop('selected', true);
+                AjaxAdapter.prototype.select.call(this, data);
+            };
+            return SingleValueAjaxAdapter;
+        });
+    $.fn.select2.amd.define('select2/data/multiValueAjaxAdapter',[
+        'select2/data/ajax',
+        'select2/utils'
+    ],
+    function (AjaxAdapter, Utils) {
+        function MultiValueAjaxAdapter ($element, options) {
+            MultiValueAjaxAdapter.__super__.constructor.call(this, $element, options);
+        }
+        Utils.Extend(MultiValueAjaxAdapter, AjaxAdapter);
+        MultiValueAjaxAdapter.prototype.current = function (callback) {
+            let value = this.$element.val();
+            let vocab = this.$element.data('vocabulary');
+            function label(key) {
+                return (!vocab || !vocab[key]) ? key : vocab[key];
+            }
+            let data = [];
+            value.split(',').forEach((v) => {
+                data.push({ id: v, text: label(v) });
+            });
+            callback(data);
+        };
+        MultiValueAjaxAdapter.prototype.select = function(data) {
+            AjaxAdapter.prototype.select.call(this, data);
+        };
+        return MultiValueAjaxAdapter;
+    });
+    const singleValueAjaxAdapter = $.fn.select2.amd.require('select2/data/singleValueAjaxAdapter');
+    const multiValueAjaxAdapter = $.fn.select2.amd.require('select2/data/multiValueAjaxAdapter');
+
     class Select2Widget {
         static initialize(context) {
             $('.select2', context).each(function (event) {
@@ -31,37 +83,29 @@ var yafowil_select2 = (function (exports, $) {
                 options.ajax = {
                     url: options.ajaxurl,
                     dataType: 'json',
-                    data: function (term, page) {
-                        return { q: term };
+                    data: function (params) {
+                        return { q: params.term };
                     },
-                    results: function (data, page, query) {
+                    processResults: function (data, params) {
                         if (options.tags && !data.length) {
                             data.push({
-                                id: query.term,
-                                text: query.term
+                                id: params.term,
+                                text: params.term
                             });
                         }
-                        return { results: data };
+                        let results = data.map(item => ({ id: item.id, text: item.text || item.id }));
+                        return { results: results };
                     }
                 };
-                options.initSelection = function (element, callback) {
-                    let value = element.val();
-                    if (!value) { return; }
-                    let vocab = element.data('vocabulary');
-                    function label(key) {
-                        return (!vocab || !vocab[key]) ? key : vocab[key];
-                    }
-                    if (options.multiple) {
-                        let data = [];
-                        $(element.val().split(",")).each(function() {
-                            data.push({ id: this, text: label(this) });
-                        });
-                        callback(data);
-                    } else {
-                        callback({ id: value, text: label(value) });
-                    }
-                };
+                if (options.multiple) {
+                    options.dataAdapter = multiValueAjaxAdapter;
+                } else {
+                    options.dataAdapter = singleValueAjaxAdapter;
+                }
             }
+            options.selectionCssClass = "select2--medium";
+            options.dropdownCssClass = "select2--medium";
+            options.width = '500px';
             return options;
         }
         extract_value(value) {

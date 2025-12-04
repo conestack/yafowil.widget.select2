@@ -22,8 +22,8 @@ var yafowil_select2 = (function (exports, $) {
                 this.$element.find('option[value="' + data.id + '"]').prop('selected', true);
                 AjaxAdapter.prototype.select.call(this, data);
             };
-        return SingleValueAjaxAdapter;
-    });
+            return SingleValueAjaxAdapter;
+        });
     $.fn.select2.amd.define('select2/data/multiValueAjaxAdapter',[
         'select2/data/ajax',
         'select2/utils'
@@ -50,8 +50,9 @@ var yafowil_select2 = (function (exports, $) {
         };
         return MultiValueAjaxAdapter;
     });
-    const singleValueAjaxAdapter=$.fn.select2.amd.require('select2/data/singleValueAjaxAdapter');
-    const multiValueAjaxAdapter=$.fn.select2.amd.require('select2/data/multiValueAjaxAdapter');
+    const singleValueAjaxAdapter = $.fn.select2.amd.require('select2/data/singleValueAjaxAdapter');
+    const multiValueAjaxAdapter = $.fn.select2.amd.require('select2/data/multiValueAjaxAdapter');
+
     class Select2Widget {
         static initialize(context) {
             $('.select2', context).each(function (event) {
