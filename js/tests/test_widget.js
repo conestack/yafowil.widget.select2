@@ -1,6 +1,7 @@
+// Import mock first to set up $.fn.select2.amd before widget module loads
+import {$, amd_modules} from './select2_mock.js';
 import {Select2Widget} from "../src/default/widget";
 import {register_array_subscribers} from "../src/default/widget";
-import $ from 'jquery';
 
 QUnit.module('select2', hooks => {
     let wid;
@@ -15,8 +16,10 @@ QUnit.module('select2', hooks => {
         el.data('vocabulary', vocab);
     });
     hooks.afterEach(()=> {
-        // remove select2 from jQuery namespace
-        delete $.fn.select2;
+        // Reset select2 but preserve AMD mock for subsequent tests
+        const savedAmd = $.fn.select2.amd;
+        $.fn.select2 = function() { return this; };
+        $.fn.select2.amd = savedAmd;
         el.remove();
         wid = null;
     });
@@ -100,7 +103,8 @@ QUnit.module('select2', hooks => {
                 return this.each(function (i, el) {
                     $(el).on('change', (e) => {
                         let term = $(el).val();
-                        assert.step(`term: ${opts.ajax.data(term).q}`);
+                        // Select2 4.x passes params object with term property
+                        assert.step(`term: ${opts.ajax.data({term: term}).q}`);
 
                         for (let word of vocab) {
                             if (term && term[0].toUpperCase() === word[0].toUpperCase()) {
@@ -139,11 +143,14 @@ QUnit.module('select2', hooks => {
                 return this.each(function (i, el) {
                     $(el).on('change', (e) => {
                         let term = $(el).val();
-                        assert.deepEqual(
-                            opts.ajax.results([], 0, term).results,
-                            [{'id': undefined,
-                                'text': undefined
-                            }]);
+                        // Select2 4.x uses processResults instead of results
+                        // When tags is enabled and data is empty, adds term as option
+                        let result = opts.ajax.processResults([], {term: term});
+                        if (term) {
+                            assert.deepEqual(result.results, [{id: term, text: term}]);
+                        } else {
+                            assert.deepEqual(result.results, [{id: '', text: ''}]);
+                        }
                     });
                 });
             }
@@ -156,19 +163,13 @@ QUnit.module('select2', hooks => {
         });
         assert.strictEqual(wid.options.ajax.url, 'test-ajax-url');
 
-        // empty value
+        // empty value - with tags enabled, adds empty term as option
         el.val('');
         el.trigger('change');
 
-        // term no match
+        // term no match - with tags enabled, adds term as new option
         el.val('Z');
         el.trigger('change');
-        wid.options.initSelection(el, function(data) {
-            assert.deepEqual(data, {
-                "id": "Z",
-                "text": "Z"
-            });
-        });
     });
 
     QUnit.test('Ajax & multiple', assert => {
@@ -177,11 +178,15 @@ QUnit.module('select2', hooks => {
                 return this.each(function (i, el) {
                     $(el).on('change', (e) => {
                         let term = $(el).val();
-                        assert.step(`term: ${opts.ajax.data(term).q}`);
+                        // Select2 4.x passes params object with term property
+                        assert.step(`term: ${opts.ajax.data({term: term}).q}`);
 
                         for (let word of vocab) {
                             if (term && term[0].toUpperCase() === word[0].toUpperCase()) {
-                                assert.strictEqual(opts.ajax.results(word, 0, term).results, word);
+                                // Select2 4.x uses processResults with array of {id, text} objects
+                                let data = [{id: word, text: word}];
+                                let result = opts.ajax.processResults(data, {term: term});
+                                assert.deepEqual(result.results, [{id: word, text: word}]);
                                 assert.step(`match: ${word}`);
                             }
                         }
@@ -196,6 +201,8 @@ QUnit.module('select2', hooks => {
             tags: ['Six', 'Eight']
         });
         assert.strictEqual(wid.options.ajax.url, 'test-ajax-url');
+        // Select2 4.x uses dataAdapter instead of initSelection
+        assert.ok(wid.options.dataAdapter);
 
         el.val('O')
         el.trigger('change');
@@ -203,31 +210,16 @@ QUnit.module('select2', hooks => {
             'term: O',
             'match: One'
         ]);
-        wid.options.initSelection(el, function(data) {
-            assert.deepEqual(data, [{
-                "id": "O",
-                "text": "O"
-            }]);
-        });
 
         el.val('Z')
         el.trigger('change');
         assert.verifySteps([
             'term: Z'
         ]);
-        wid.options.initSelection(el, function(data) {
-            assert.deepEqual(data, [{
-                "id": "Z",
-                "text": "Z"
-            }]);
-        });
 
         el.val('');
         el.trigger('change');
         assert.strictEqual(el.val(), '');
-        wid.options.initSelection(el, function() {
-            throw 'returns before this statement';
-        });
         assert.verifySteps(['term: ']);
     });
 
