@@ -2,6 +2,7 @@
 import {$, amd_modules} from './select2_mock.js';
 import {Select2Widget} from "../src/default/widget";
 import {register_array_subscribers} from "../src/default/widget";
+import {singleValueAjaxAdapter, multiValueAjaxAdapter} from "../src/adapters/adapters.js";
 
 QUnit.module('select2', hooks => {
     let wid;
@@ -280,5 +281,119 @@ QUnit.module('select2', hooks => {
             })
         },
         /willFail not found/)
+    });
+});
+
+QUnit.module('adapters', hooks => {
+    let el;
+
+    hooks.beforeEach(() => {
+        el = $('<input class="select2" value=""/>');
+        el.appendTo('body');
+    });
+
+    hooks.afterEach(() => {
+        el.remove();
+    });
+
+    QUnit.test('SingleValueAjaxAdapter - current without vocabulary', assert => {
+        const done = assert.async();
+        el.val('test-value');
+
+        const adapter = new singleValueAjaxAdapter(el, {});
+        adapter.current(function(data) {
+            assert.deepEqual(data, [{id: 'test-value', text: 'test-value'}]);
+            done();
+        });
+    });
+
+    QUnit.test('SingleValueAjaxAdapter - current with vocabulary', assert => {
+        const done = assert.async();
+        el.val('key1');
+        el.data('vocabulary', {key1: 'Label One', key2: 'Label Two'});
+
+        const adapter = new singleValueAjaxAdapter(el, {});
+        adapter.current(function(data) {
+            assert.deepEqual(data, [{id: 'key1', text: 'Label One'}]);
+            done();
+        });
+    });
+
+    QUnit.test('SingleValueAjaxAdapter - current with vocabulary missing key', assert => {
+        const done = assert.async();
+        el.val('unknown');
+        el.data('vocabulary', {key1: 'Label One'});
+
+        const adapter = new singleValueAjaxAdapter(el, {});
+        adapter.current(function(data) {
+            // Falls back to key when not in vocabulary
+            assert.deepEqual(data, [{id: 'unknown', text: 'unknown'}]);
+            done();
+        });
+    });
+
+    QUnit.test('SingleValueAjaxAdapter - select', assert => {
+        // Add an option element to select
+        const selectEl = $('<select class="select2"><option value="opt1">Option 1</option></select>');
+        selectEl.appendTo('body');
+
+        const adapter = new singleValueAjaxAdapter(selectEl, {});
+        adapter.select({id: 'opt1', text: 'Option 1'});
+
+        assert.ok(selectEl.find('option[value="opt1"]').prop('selected'));
+        selectEl.remove();
+    });
+
+    QUnit.test('MultiValueAjaxAdapter - current without vocabulary', assert => {
+        const done = assert.async();
+        el.val('val1,val2,val3');
+
+        const adapter = new multiValueAjaxAdapter(el, {});
+        adapter.current(function(data) {
+            assert.deepEqual(data, [
+                {id: 'val1', text: 'val1'},
+                {id: 'val2', text: 'val2'},
+                {id: 'val3', text: 'val3'}
+            ]);
+            done();
+        });
+    });
+
+    QUnit.test('MultiValueAjaxAdapter - current with vocabulary', assert => {
+        const done = assert.async();
+        el.val('a,b');
+        el.data('vocabulary', {a: 'Alpha', b: 'Beta', c: 'Gamma'});
+
+        const adapter = new multiValueAjaxAdapter(el, {});
+        adapter.current(function(data) {
+            assert.deepEqual(data, [
+                {id: 'a', text: 'Alpha'},
+                {id: 'b', text: 'Beta'}
+            ]);
+            done();
+        });
+    });
+
+    QUnit.test('MultiValueAjaxAdapter - current with partial vocabulary', assert => {
+        const done = assert.async();
+        el.val('known,unknown');
+        el.data('vocabulary', {known: 'Known Label'});
+
+        const adapter = new multiValueAjaxAdapter(el, {});
+        adapter.current(function(data) {
+            assert.deepEqual(data, [
+                {id: 'known', text: 'Known Label'},
+                {id: 'unknown', text: 'unknown'}
+            ]);
+            done();
+        });
+    });
+
+    QUnit.test('MultiValueAjaxAdapter - select', assert => {
+        const adapter = new multiValueAjaxAdapter(el, {});
+        // select() just calls parent's select, which is mocked
+        // Verify it doesn't throw
+        adapter.select({id: 'test', text: 'Test'});
+        assert.ok(true, 'select() executed without error');
     });
 });
