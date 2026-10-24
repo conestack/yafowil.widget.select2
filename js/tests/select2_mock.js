@@ -5,34 +5,34 @@ import $ from 'jquery';
 export const amd_modules = {};
 
 // Mock implementations for Select2 internal modules
-const mockAjaxAdapter = function($element, options) {
+const mockAjaxAdapter = function ($element, options) {
     this.$element = $element;
     this.options = options;
 };
-mockAjaxAdapter.prototype.select = function(data) {};
+mockAjaxAdapter.prototype.select = (_data) => {};
 
 const mockUtils = {
-    Extend: function(Child, Parent) {
+    Extend: (Child, Parent) => {
         Child.__super__ = { constructor: Parent };
         Child.prototype = Object.create(Parent.prototype);
         Child.prototype.constructor = Child;
-    }
+    },
 };
 
-$.fn.select2 = function() { return this; };
+$.fn.select2 = function () {
+    return this;
+};
 $.fn.select2.amd = {
-    define: function(name, deps, factory) {
+    define: (name, deps, factory) => {
         // Resolve dependencies and call factory
-        const resolved = deps.map(dep => {
+        const resolved = deps.map((dep) => {
             if (dep === 'select2/data/ajax') return mockAjaxAdapter;
             if (dep === 'select2/utils') return mockUtils;
             return amd_modules[dep];
         });
         amd_modules[name] = factory.apply(null, resolved);
     },
-    require: function(name) {
-        return amd_modules[name];
-    }
+    require: (name) => amd_modules[name],
 };
 
 export { $ };

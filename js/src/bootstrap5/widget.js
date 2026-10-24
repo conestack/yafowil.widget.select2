@@ -1,24 +1,19 @@
 import $ from 'jquery';
-import {
-    singleValueAjaxAdapter,
-    multiValueAjaxAdapter
-} from '../adapters/adapters.js';
+import { multiValueAjaxAdapter, singleValueAjaxAdapter } from '../adapters/adapters.js';
 
 export class Select2Widget {
-
     /**
      * Initializes each widget in the given DOM context.
-     * 
+     *
      * @param {jQuery} context - DOM context for initialization.
      */
     static initialize(context) {
-        $('.select2', context).each(function (event) {
-            let elem = $(this);
-            if (window.yafowil_array !== undefined &&
-                window.yafowil_array.inside_template(elem)) {
+        $('.select2', context).each(function () {
+            const elem = $(this);
+            if (window.yafowil_array?.inside_template(elem)) {
                 return;
             }
-            let options = elem.data();
+            const options = elem.data();
             new Select2Widget(elem, options);
         });
     }
@@ -44,26 +39,27 @@ export class Select2Widget {
      * @returns {Object} - The initialized options.
      */
     init_options(options) {
-        for (let name in options) {
+        for (const name in options) {
             options[name] = this.extract_value(options[name]);
         }
         if (options.ajaxurl) {
             options.ajax = {
                 url: options.ajaxurl,
                 dataType: 'json',
-                data: function (params) {
-                    return { q: params.term };
-                },
-                processResults: function (data, params) {
+                data: (params) => ({ q: params.term }),
+                processResults: (data, params) => {
                     if (options.tags && !data.length) {
                         data.push({
                             id: params.term,
-                            text: params.term
+                            text: params.term,
                         });
                     }
-                    let results = data.map(item => ({ id: item.id, text: item.text || item.id }));
+                    const results = data.map((item) => ({
+                        id: item.id,
+                        text: item.text || item.id,
+                    }));
                     return { results: results };
-                }
+                },
             };
             if (options.multiple) {
                 options.dataAdapter = multiValueAjaxAdapter;
@@ -73,8 +69,8 @@ export class Select2Widget {
         }
 
         options.theme = 'bootstrap-5';
-        options.selectionCssClass = "select2--medium";
-        options.dropdownCssClass = "select2--medium";
+        options.selectionCssClass = 'select2--medium';
+        options.dropdownCssClass = 'select2--medium';
         options.width = '500px';
 
         return options;
@@ -91,10 +87,10 @@ export class Select2Widget {
             // value.length is always at least 1, because split returns
             // empty string in array.
             if (!value[0].length) {
-                throw "No function defined";
+                throw 'No function defined';
             }
             let ctx = window;
-            for (let name of value) {
+            for (const name of value) {
                 if (ctx[name] === undefined) {
                     throw `${name} not found`;
                 }
@@ -106,7 +102,6 @@ export class Select2Widget {
     }
 }
 
-
 //////////////////////////////////////////////////////////////////////////////
 // yafowil.widget.array integration
 //////////////////////////////////////////////////////////////////////////////
@@ -114,7 +109,7 @@ export class Select2Widget {
 /**
  * Re-initializes widget on array add event.
  */
-function select2_on_array_add(inst, context) {
+function select2_on_array_add(_inst, context) {
     Select2Widget.initialize(context);
 }
 
