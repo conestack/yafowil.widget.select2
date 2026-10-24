@@ -5,7 +5,6 @@ from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.tests import YafowilTestCase
 import os
-import unittest
 
 
 def np(path):
@@ -347,7 +346,3 @@ class TestSelect2Widget(YafowilTestCase):
         self.assertEqual(styles[1].path, 'yafowil-select2/default')
         self.assertEqual(styles[1].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[1].file_path))
-
-
-if __name__ == '__main__':
-    unittest.main()
