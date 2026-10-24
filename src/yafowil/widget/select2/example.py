@@ -1,15 +1,7 @@
-# -*- coding: utf-8 -*-
+from urllib.parse import parse_qs
+from urllib.parse import urlparse
 from yafowil.base import factory
-from yafowil.compat import IS_PY2
 import json
-
-
-if IS_PY2:
-    from urlparse import urlparse
-    from urlparse import parse_qs
-else:
-    from urllib.parse import urlparse
-    from urllib.parse import parse_qs
 
 
 def json_response(url):
