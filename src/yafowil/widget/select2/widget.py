@@ -1,7 +1,8 @@
 from collections import OrderedDict
 from node.utils import UNSET
 from yafowil.base import factory
-from yafowil.common import generic_extractor, display_proxy_renderer
+from yafowil.common import display_proxy_renderer
+from yafowil.common import generic_extractor
 from yafowil.common import generic_required_extractor
 from yafowil.common import input_generic_renderer
 from yafowil.select import select_display_renderer
@@ -87,17 +88,17 @@ def select2_edit_renderer(widget, data):
             extracted = data.extracted
             if isinstance(extracted, list) or isinstance(extracted, tuple):
                 reset_extracted = True
-                data.extracted = u','.join(extracted)
+                data.extracted = ','.join(extracted)
         value = UNSET
         reset_value = False
         if data.value is not UNSET:
             value = data.value
             if isinstance(value, list) or isinstance(value, tuple):
                 reset_value = True
-                data.value = u','.join(value)
+                data.value = ','.join(value)
         else:
             reset_value = True
-            data.value = u''
+            data.value = ''
         # force widget vocabulary as dict to make JS happy
         vocab = vocabulary(attr_value('vocabulary', widget, data, []))
         if vocab:
@@ -107,7 +108,8 @@ def select2_edit_renderer(widget, data):
                 dict_vocab[key] = term
             widget.attrs['vocabulary'] = dict_vocab
         custom_attrs = data_attrs_helper(
-            widget, data, ['ajaxurl', 'vocabulary'] + select2_options)
+            widget, data, ['ajaxurl', 'vocabulary'] + select2_options
+        )
         renderer = input_generic_renderer
         rendered = renderer(widget, data, custom_attrs=custom_attrs)
         if reset_extracted:
@@ -119,8 +121,7 @@ def select2_edit_renderer(widget, data):
         if multiple:
             widget.attrs['multivalued'] = True
             del widget.attrs['multiple']
-        custom_attrs = data_attrs_helper(
-            widget, data, ['ajaxurl'] + select2_options)
+        custom_attrs = data_attrs_helper(widget, data, ['ajaxurl'] + select2_options)
         renderer = select_edit_renderer
         rendered = renderer(widget, data, custom_attrs=custom_attrs)
     return rendered
@@ -138,10 +139,8 @@ factory.register(
     'select2',
     extractors=[select2_extractor, generic_required_extractor],
     edit_renderers=[select2_edit_renderer],
-    display_renderers=[
-        select2_display_renderer,
-        display_proxy_renderer
-    ])
+    display_renderers=[select2_display_renderer, display_proxy_renderer],
+)
 
 factory.doc['blueprint']['select2'] = """\
 Add-on blueprint

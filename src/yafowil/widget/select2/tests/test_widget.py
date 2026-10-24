@@ -12,65 +12,58 @@ def np(path):
 
 
 class TestSelect2Widget(YafowilTestCase):
-
     def setUp(self):
         super(TestSelect2Widget, self).setUp()
         from yafowil.widget import select2
         from yafowil.widget.select2 import widget
+
         reload(widget)
         select2.register()
 
     def test_render_single(self):
-        widget = factory(
-            'select2',
-            name='single',
-            props={
-                'required': True
-            })
-        self.assertEqual(widget(), (
-            '<select class="select2" id="input-single" name="single" '
-            'required="required"> </select>'
-        ))
+        widget = factory('select2', name='single', props={'required': True})
+        self.assertEqual(
+            widget(),
+            (
+                '<select class="select2" id="input-single" name="single" '
+                'required="required"> </select>'
+            ),
+        )
 
     def test_render_multiple(self):
         widget = factory(
-            'select2',
-            name='multi',
-            props={
-                'required': True,
-                'multiple': True
-            })
-        self.assertEqual(widget(), (
-            '<input id="exists-multi" name="multi-exists" type="hidden" '
-            'value="exists" /><select class="select2" id="input-multi" '
-            'multiple="multiple" name="multi" required="required"> </select>'
-        ))
+            'select2', name='multi', props={'required': True, 'multiple': True}
+        )
+        self.assertEqual(
+            widget(),
+            (
+                '<input id="exists-multi" name="multi-exists" type="hidden" '
+                'value="exists" /><select class="select2" id="input-multi" '
+                'multiple="multiple" name="multi" required="required"> </select>'
+            ),
+        )
 
     def test_render_single_tag_mode(self):
-        widget = factory(
-            'select2',
-            name='single',
-            props={
-                'inputtag': True
-            })
-        self.assertEqual(widget(), (
-            '<input class="select2" id="input-single" name="single" '
-            'value="" />'
-        ))
+        widget = factory('select2', name='single', props={'inputtag': True})
+        self.assertEqual(
+            widget(),
+            ('<input class="select2" id="input-single" name="single" value="" />'),
+        )
 
     def test_render_multiple_tag_mode(self):
         widget = factory(
             'select2',
             name='multi',
             value=['1', '2'],
-            props={
-                'inputtag': True,
-                'multiple': True
-            })
-        self.assertEqual(widget(), (
-            '<input class="select2" data-multiple=\'true\' id="input-multi" '
-            'name="multi" value="1,2" />'
-        ))
+            props={'inputtag': True, 'multiple': True},
+        )
+        self.assertEqual(
+            widget(),
+            (
+                '<input class="select2" data-multiple=\'true\' id="input-multi" '
+                'name="multi" value="1,2" />'
+            ),
+        )
 
     def test_render_with_vocabulary(self):
         # Provide a vocabulary if value terms consists of id / label pairs
@@ -85,20 +78,19 @@ class TestSelect2Widget(YafowilTestCase):
                 'inputtag': True,
                 'multiple': True,
                 'vocabulary': vocab,
-            })
-        self.assertEqual(widget(), (
-            '<input class="select2" data-multiple=\'true\' '
-            'data-vocabulary=\'{"1": "Label 1", "2": "Label 2"}\' '
-            'id="input-multi" name="multi" value="1,2" />'
-        ))
+            },
+        )
+        self.assertEqual(
+            widget(),
+            (
+                '<input class="select2" data-multiple=\'true\' '
+                'data-vocabulary=\'{"1": "Label 1", "2": "Label 2"}\' '
+                'id="input-multi" name="multi" value="1,2" />'
+            ),
+        )
 
     def test_extract_required(self):
-        widget = factory(
-            'select2',
-            name='single',
-            props={
-                'required': True
-            })
+        widget = factory('select2', name='single', props={'required': True})
 
         request = {}
         data = widget.extract(request)
@@ -106,10 +98,7 @@ class TestSelect2Widget(YafowilTestCase):
 
         request = {'single': ''}
         data = widget.extract(request)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('Mandatory field was empty')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('Mandatory field was empty')])
         self.assertEqual(data.extracted, '')
 
         request = {'single': '1'}
@@ -118,12 +107,7 @@ class TestSelect2Widget(YafowilTestCase):
         self.assertEqual(data.extracted, '1')
 
     def test_extract_single_value(self):
-        widget = factory(
-            'select2',
-            name='single',
-            props={
-                'inputtag': True
-            })
+        widget = factory('select2', name='single', props={'inputtag': True})
 
         request = {}
         data = widget.extract(request)
@@ -139,12 +123,8 @@ class TestSelect2Widget(YafowilTestCase):
 
     def test_extract_multi_value(self):
         widget = factory(
-            'select2',
-            name='multi',
-            props={
-                'multiple': True,
-                'inputtag': True
-            })
+            'select2', name='multi', props={'multiple': True, 'inputtag': True}
+        )
 
         request = {}
         data = widget.extract(request)
@@ -163,39 +143,42 @@ class TestSelect2Widget(YafowilTestCase):
             'select2',
             name='multi',
             value=['1', '2'],
-            props={
-                'multiple': True,
-                'inputtag': True
-            })
-        self.assertEqual(widget(), (
-            '<input class="select2" data-multiple=\'true\' id="input-multi" '
-            'name="multi" value="1,2" />'
-        ))
+            props={'multiple': True, 'inputtag': True},
+        )
+        self.assertEqual(
+            widget(),
+            (
+                '<input class="select2" data-multiple=\'true\' id="input-multi" '
+                'name="multi" value="1,2" />'
+            ),
+        )
 
         request = {'multi': '1,2,3'}
         data = widget.extract(request)
-        self.assertEqual(widget(data=data), (
-            '<input class="select2" data-multiple=\'true\' id="input-multi" '
-            'name="multi" value="1,2,3" />'
-        ))
+        self.assertEqual(
+            widget(data=data),
+            (
+                '<input class="select2" data-multiple=\'true\' id="input-multi" '
+                'name="multi" value="1,2,3" />'
+            ),
+        )
         self.assertEqual(data.extracted, ['1', '2', '3'])
 
         request = {'multi': ''}
         data = widget.extract(request)
-        self.assertEqual(widget(data=data), (
-            '<input class="select2" data-multiple=\'true\' id="input-multi" '
-            'name="multi" value="" />'
-        ))
+        self.assertEqual(
+            widget(data=data),
+            (
+                '<input class="select2" data-multiple=\'true\' id="input-multi" '
+                'name="multi" value="" />'
+            ),
+        )
         self.assertEqual(data.extracted, [])
 
     def test_display_renderer_empty(self):
-        widget = factory(
-            'select2',
-            name='empty',
-            mode='display')
+        widget = factory('select2', name='empty', mode='display')
         self.assertEqual(
-            widget(),
-            '<div class="display-select2" id="display-empty"></div>'
+            widget(), '<div class="display-select2" id="display-empty"></div>'
         )
 
     def test_display_renderer_single(self):
@@ -203,13 +186,11 @@ class TestSelect2Widget(YafowilTestCase):
             'select2',
             name='single',
             value='foo',
-            props={
-                'vocabulary': [('foo', 'Foo'), ('bar', 'Bar')]
-            },
-            mode='display')
+            props={'vocabulary': [('foo', 'Foo'), ('bar', 'Bar')]},
+            mode='display',
+        )
         self.assertEqual(
-            widget(),
-            '<div class="display-select2" id="display-single">Foo</div>'
+            widget(), '<div class="display-select2" id="display-single">Foo</div>'
         )
 
     def test_display_renderer_multiple(self):
@@ -221,11 +202,15 @@ class TestSelect2Widget(YafowilTestCase):
                 'vocabulary': [('foo', 'Foo'), ('bar', 'Bar')],
                 'multiple': True,
             },
-            mode='display')
-        self.assertEqual(widget(), (
-            '<ul class="display-select2" '
-            'id="display-multi"><li>Foo</li><li>Bar</li></ul>'
-        ))
+            mode='display',
+        )
+        self.assertEqual(
+            widget(),
+            (
+                '<ul class="display-select2" '
+                'id="display-multi"><li>Foo</li><li>Bar</li></ul>'
+            ),
+        )
 
     # test with display_proxy_renderer
     def test_extract_with_preset_value_and_display_proxy_renderer(self):
@@ -234,46 +219,43 @@ class TestSelect2Widget(YafowilTestCase):
             name='multi',
             value=['1', '2'],
             mode='display',
-            props={
-                'multiple': True,
-                'inputtag': True,
-                'display_proxy': True
-            })
-        self.assertEqual(widget(), (
-            '<ul class="display-select2" id="display-multi"><li>1</li><li>2</li></ul>'
-            '<input class="select2" id="input-multi" name="multi" type="hidden" value="1" />'
-            '<input class="select2" id="input-multi" name="multi" type="hidden" value="2" />'
-        ))
+            props={'multiple': True, 'inputtag': True, 'display_proxy': True},
+        )
+        self.assertEqual(
+            widget(),
+            (
+                '<ul class="display-select2" id="display-multi"><li>1</li><li>2</li></ul>'
+                '<input class="select2" id="input-multi" name="multi" type="hidden" value="1" />'
+                '<input class="select2" id="input-multi" name="multi" type="hidden" value="2" />'
+            ),
+        )
 
         request = {'multi': '1,2,3'}
         data = widget.extract(request)
-        self.assertEqual(widget(data=data), (
-            '<ul class="display-select2" id="display-multi"><li>1</li><li>2</li><li>3</li></ul>'
-            '<input class="select2" id="input-multi" name="multi" type="hidden" value="1" />'
-            '<input class="select2" id="input-multi" name="multi" type="hidden" value="2" />'
-            '<input class="select2" id="input-multi" name="multi" type="hidden" value="3" />'
-        ))
+        self.assertEqual(
+            widget(data=data),
+            (
+                '<ul class="display-select2" id="display-multi"><li>1</li><li>2</li><li>3</li></ul>'
+                '<input class="select2" id="input-multi" name="multi" type="hidden" value="1" />'
+                '<input class="select2" id="input-multi" name="multi" type="hidden" value="2" />'
+                '<input class="select2" id="input-multi" name="multi" type="hidden" value="3" />'
+            ),
+        )
         self.assertEqual(data.extracted, ['1', '2', '3'])
 
         request = {'multi': ''}
         data = widget.extract(request)
-        self.assertEqual(widget(data=data), (
-            '<div class="display-select2" id="display-multi"></div>'
-        ))
+        self.assertEqual(
+            widget(data=data), ('<div class="display-select2" id="display-multi"></div>')
+        )
         self.assertEqual(data.extracted, [])
 
     def test_display_renderer_empty_and_display_proxy_renderer(self):
         widget = factory(
-            'select2',
-            name='empty',
-            mode='display',
-            props={
-                'display_proxy': True
-            }
+            'select2', name='empty', mode='display', props={'display_proxy': True}
         )
         self.assertEqual(
-            widget(),
-            '<div class="display-select2" id="display-empty"></div>'
+            widget(), '<div class="display-select2" id="display-empty"></div>'
         )
 
     def test_display_renderer_single_and_display_proxy_renderer(self):
@@ -282,15 +264,12 @@ class TestSelect2Widget(YafowilTestCase):
             name='single',
             value='foo',
             mode='display',
-            props={
-                'vocabulary': [('foo', 'Foo'), ('bar', 'Bar')],
-                'display_proxy': True
-            },
+            props={'vocabulary': [('foo', 'Foo'), ('bar', 'Bar')], 'display_proxy': True},
         )
         self.assertEqual(
             widget(),
             '<div class="display-select2" id="display-single">Foo</div>'
-            '<input class="select2" id="input-single" name="single" type="hidden" value="foo" />'
+            '<input class="select2" id="input-single" name="single" type="hidden" value="foo" />',
         )
 
     def test_display_renderer_multiple_and_display_proxy_renderer(self):
@@ -301,14 +280,18 @@ class TestSelect2Widget(YafowilTestCase):
             props={
                 'vocabulary': [('foo', 'Foo'), ('bar', 'Bar')],
                 'multiple': True,
-                'display_proxy': True
+                'display_proxy': True,
             },
-            mode='display')
-        self.assertEqual(widget(), (
-            '<ul class="display-select2" id="display-multi"><li>Foo</li><li>Bar</li></ul>'
-            '<input class="select2" id="input-multi" name="multi" type="hidden" value="foo" />'
-            '<input class="select2" id="input-multi" name="multi" type="hidden" value="bar" />'
-        ))
+            mode='display',
+        )
+        self.assertEqual(
+            widget(),
+            (
+                '<ul class="display-select2" id="display-multi"><li>Foo</li><li>Bar</li></ul>'
+                '<input class="select2" id="input-multi" name="multi" type="hidden" value="foo" />'
+                '<input class="select2" id="input-multi" name="multi" type="hidden" value="bar" />'
+            ),
+        )
 
     def test_resources(self):
         factory.theme = 'default'
