@@ -55,6 +55,30 @@ var yafowil_select2 = (function (exports, $) {
     );
     const multiValueAjaxAdapter = $.fn.select2.amd.require('select2/data/multiValueAjaxAdapter');
 
+    const PREFIX = 'javascript:';
+    const REFUSED = ['eval', 'Function', 'setTimeout', 'setInterval'].map((name) => window[name]);
+    function extract_value(value) {
+        if (typeof value !== 'string' || !value.startsWith(PREFIX)) {
+            return value;
+        }
+        console.warn(`yafowil.widget.select2: "${PREFIX}" prefix is deprecated: ${value}`);
+        const path = value.substring(PREFIX.length).split('.');
+        if (!path[0].length) {
+            throw 'No function defined';
+        }
+        let ctx = window;
+        for (const name of path) {
+            if (!Object.hasOwn(Object(ctx), name)) {
+                throw `${name} not found`;
+            }
+            ctx = ctx[name];
+        }
+        if (REFUSED.includes(ctx)) {
+            throw `${value} is no callback`;
+        }
+        return ctx;
+    }
+
     class Select2Widget {
         static initialize(context) {
             $('.select2', context).each(function () {
@@ -70,6 +94,7 @@ var yafowil_select2 = (function (exports, $) {
             this.elem = elem;
             this.options = this.init_options(ops);
             try {
+                this.elem.removeAttr('data-escape-markup').removeData('escapeMarkup');
                 this.elem.select2(this.options);
             } catch (error) {
                 throw `Failed to initialize select2: ${error}`;
@@ -77,6 +102,7 @@ var yafowil_select2 = (function (exports, $) {
             elem.data('yafowil-select2', this);
         }
         init_options(options) {
+            delete options.escapeMarkup;
             for (const name in options) {
                 options[name] = this.extract_value(options[name]);
             }
@@ -111,21 +137,7 @@ var yafowil_select2 = (function (exports, $) {
             return options;
         }
         extract_value(value) {
-            if (typeof value === 'string' && !value.indexOf('javascript:')) {
-                value = value.substring(11, value.length).split('.');
-                if (!value[0].length) {
-                    throw 'No function defined';
-                }
-                let ctx = window;
-                for (const name of value) {
-                    if (ctx[name] === undefined) {
-                        throw `${name} not found`;
-                    }
-                    ctx = ctx[name];
-                }
-                value = ctx;
-            }
-            return value;
+            return extract_value(value);
         }
     }
     function select2_on_array_add(_inst, context) {

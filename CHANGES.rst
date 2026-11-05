@@ -4,7 +4,10 @@ Changes
 2.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Deprecate the undocumented ``javascript:`` prefix of options, it logs a warning
+  now. It resolves own properties only, ``eval``, ``Function``, ``setTimeout`` and
+  ``setInterval`` are refused. ``escapeMarkup`` cannot be set from markup anymore.
+  [rnix]
 
 
 2.0.1 (2026-10-31)

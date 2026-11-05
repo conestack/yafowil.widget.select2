@@ -102,7 +102,7 @@ for (const [variant, widget_module, theme] of widget_variants) {
             // fails because of faulty elem
             assert.throws(() => {
                 new Select2Widget(el[0], { ajaxurl: 'test' });
-            }, /Failed to initialize select2: TypeError: this.elem.select2 is not a function/);
+            }, /Failed to initialize select2: TypeError/);
         });
 
         QUnit.test('ajax', (assert) => {
@@ -260,6 +260,56 @@ for (const [variant, widget_module, theme] of widget_variants) {
             // no val that fits words
             el.val('z');
             el.trigger('change');
+        });
+
+        QUnit.test('function call - prefix is deprecated', (assert) => {
+            const warn = console.warn;
+            const warnings = [];
+            console.warn = (message) => warnings.push(message);
+            window.some = { callback: () => {} };
+            try {
+                wid = new Select2Widget(el, { matcher: 'javascript:some.callback' });
+                assert.strictEqual(wid.options.matcher, window.some.callback);
+            } finally {
+                console.warn = warn;
+                delete window.some;
+            }
+            assert.strictEqual(warnings.length, 1);
+            assert.ok(warnings[0].includes('javascript:some.callback'));
+        });
+
+        QUnit.test('function call - own properties only', (assert) => {
+            window.some = {};
+            assert.throws(() => {
+                new Select2Widget(el, { matcher: 'javascript:some.toString' });
+            }, /toString not found/);
+            delete window.some;
+        });
+
+        QUnit.test('function call - functions which run code refused', (assert) => {
+            for (const name of ['eval', 'Function', 'setTimeout', 'setInterval']) {
+                assert.throws(() => {
+                    new Select2Widget(el, { matcher: `javascript:${name}` });
+                }, /is no callback/);
+            }
+        });
+
+        QUnit.test('function call - other values stay usable', (assert) => {
+            window.some = { items: ['a', 'b'] };
+            wid = new Select2Widget(el, { data: 'javascript:some.items' });
+            assert.strictEqual(wid.options.data, window.some.items);
+            delete window.some;
+        });
+
+        QUnit.test('escapeMarkup never comes from markup', (assert) => {
+            el.attr('data-escape-markup', 'javascript:some.callback');
+            el.data('escapeMarkup', 'javascript:some.callback');
+            window.some = { callback: () => {} };
+            wid = new Select2Widget(el, el.data());
+            assert.strictEqual(wid.options.escapeMarkup, undefined);
+            assert.strictEqual(el.attr('data-escape-markup'), undefined);
+            assert.strictEqual(el.data('escapeMarkup'), undefined);
+            delete window.some;
         });
 
         QUnit.test('function call - no function defined', (assert) => {

@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { multiValueAjaxAdapter, singleValueAjaxAdapter } from '../adapters/adapters.js';
+import { extract_value } from '../callbacks.js';
 
 export class Select2Widget {
     static initialize(context) {
@@ -18,6 +19,8 @@ export class Select2Widget {
         this.options = this.init_options(ops);
 
         try {
+            // Never from markup: select2 reads the data attributes itself as well.
+            this.elem.removeAttr('data-escape-markup').removeData('escapeMarkup');
             this.elem.select2(this.options);
         } catch (error) {
             throw `Failed to initialize select2: ${error}`;
@@ -26,6 +29,7 @@ export class Select2Widget {
     }
 
     init_options(options) {
+        delete options.escapeMarkup;
         for (const name in options) {
             options[name] = this.extract_value(options[name]);
         }
@@ -63,23 +67,7 @@ export class Select2Widget {
     }
 
     extract_value(value) {
-        if (typeof value === 'string' && !value.indexOf('javascript:')) {
-            value = value.substring(11, value.length).split('.');
-            // value.length is always at least 1, because split returns
-            // empty string in array.
-            if (!value[0].length) {
-                throw 'No function defined';
-            }
-            let ctx = window;
-            for (const name of value) {
-                if (ctx[name] === undefined) {
-                    throw `${name} not found`;
-                }
-                ctx = ctx[name];
-            }
-            value = ctx;
-        }
-        return value;
+        return extract_value(value);
     }
 }
 
